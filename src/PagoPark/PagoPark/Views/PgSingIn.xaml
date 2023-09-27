@@ -3,7 +3,9 @@
     x:Class="PagoPark.Views.PgSingIn"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Sing - In"
+    x:DataType="vm:PgSingInViewModel"
     Shell.NavBarIsVisible="False">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsEnabled="False" IsVisible="False" />
@@ -18,24 +20,24 @@
         <Frame VerticalOptions="Center">
             <VerticalStackLayout Spacing="16">
                 <Grid RowDefinitions="auto, auto">
-                    <Label Grid.Row="0" Text="Username:" />
+                    <Label Grid.Row="0" Text="Username: *" />
                     <Entry
                         Grid.Row="1"
                         Placeholder="Write user name here!"
-                        Text="" />
+                        Text="{Binding Username}" />
                 </Grid>
                 <Grid RowDefinitions="auto, auto">
-                    <Label Grid.Row="0" Text="Password:" />
+                    <Label Grid.Row="0" Text="Password: *" />
                     <Entry
                         Grid.Row="1"
                         IsPassword="True"
                         Placeholder="Write password here!"
-                        Text="" />
+                        Text="{Binding Password}" />
                 </Grid>
-                <Button Text="Sing in" />
+                <Button Command="{Binding LogInCommand}" Text="Log-in" />
+                <Button Command="{Binding SingInCommand}" Text="Sing-in" />
             </VerticalStackLayout>
         </Frame>
-
     </Grid>
 
 </ContentPage>
