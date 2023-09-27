@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgHome"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Home">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
+
+    <Grid Padding="16">
+        <Label
+            HorizontalOptions="Center"
+            Text="Welcome to PagoPark!"
+            TextColor="{StaticResource Secondary}"
+            VerticalOptions="Start" />
+        <Frame VerticalOptions="End">
+            <VerticalStackLayout Spacing="8">
+                <Button IsEnabled="False" Text="Pago" />
+                <Button IsEnabled="False" Text="Registro de Pagos" />
+                <Button IsEnabled="False" Text="Reportes" />
+                <Button IsEnabled="False" Text="Camiones" />
+                <RoundRectangle BackgroundColor="{StaticResource Gray200}" HeightRequest="2" />
+                <Button Text="Usuario" />
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+
+</ContentPage>

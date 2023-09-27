@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgSingIn"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Sing - In"
+    Shell.NavBarIsVisible="False">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
+
+    <Grid Padding="16">
+        <Label
+            FontSize="Title"
+            HorizontalOptions="Center"
+            Text="Welcome to PagoPark!"
+            TextColor="{StaticResource Secondary}" />
+        <Frame VerticalOptions="Center">
+            <VerticalStackLayout Spacing="16">
+                <Grid RowDefinitions="auto, auto">
+                    <Label Grid.Row="0" Text="Username:" />
+                    <Entry
+                        Grid.Row="1"
+                        Placeholder="Write user name here!"
+                        Text="" />
+                </Grid>
+                <Grid RowDefinitions="auto, auto">
+                    <Label Grid.Row="0" Text="Password:" />
+                    <Entry
+                        Grid.Row="1"
+                        IsPassword="True"
+                        Placeholder="Write password here!"
+                        Text="" />
+                </Grid>
+                <Button Text="Sing in" />
+            </VerticalStackLayout>
+        </Frame>
+
+    </Grid>
+
+</ContentPage>
