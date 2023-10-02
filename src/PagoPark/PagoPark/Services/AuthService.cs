@@ -9,12 +9,14 @@ public interface IAuthService
     bool Login(string username, string password);
     bool PasswordChange(string newPassword);
     bool Register(string username, string password);
+    bool ExistPassword(string pwd);
+    CurrentUser currentUser { get; }
 }
 
 public class AuthService : IAuthService
 {
     readonly ILiteCollection<User> collection;
-    public CurrentUser currentUser;
+    public CurrentUser currentUser { get; private set; }
 
     public AuthService()
     {
@@ -64,6 +66,13 @@ public class AuthService : IAuthService
         }
 
         return false;
+    }
+
+    public bool ExistPassword(string pwd)
+    {
+        string id = Preferences.Get(nameof(currentUser), string.Empty);
+        var u = collection.FindById(id);
+        return u.Password == pwd;
     }
 
     public bool PasswordChange(string newPassword)

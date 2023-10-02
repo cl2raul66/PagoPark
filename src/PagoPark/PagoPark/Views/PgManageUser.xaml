@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgManageUser"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
+    Title="Administrar usuario"
+    x:DataType="vm:PgManageUserViewModel">
+
+    <Grid Padding="16" RowDefinitions="auto,*">
+        <Grid
+            Grid.Row="0"
+            RowDefinitions="auto,auto"
+            RowSpacing="8">
+            <tk:AvatarView
+                Grid.Row="0"
+                FontSize="Subtitle"
+                HeightRequest="56"
+                Text="{Binding Username, Mode=OneTime, Converter={StaticResource StringToAcronym}}"
+                TextColor="{StaticResource Primary}"
+                WidthRequest="56" />
+            <Label
+                Grid.Row="1"
+                FontSize="Subtitle"
+                HorizontalOptions="Center"
+                Text="{Binding Username, Mode=OneTime, StringFormat='Usuario: {0}'}"
+                TextColor="{StaticResource Primary}" />
+        </Grid>
+        <Frame Grid.Row="1" VerticalOptions="Center">
+            <VerticalStackLayout Spacing="16">
+                <Grid RowDefinitions="auto, auto">
+                    <Label Grid.Row="0" Text="Old password: *" />
+                    <Entry
+                        Grid.Row="1"
+                        IsPassword="True"
+                        Placeholder="Write old password here!"
+                        Text="{Binding OldPassword}" />
+                </Grid>
+                <Grid RowDefinitions="auto, auto">
+                    <Label Grid.Row="0" Text="New password: *" />
+                    <Entry
+                        Grid.Row="1"
+                        IsPassword="True"
+                        Placeholder="Write the new password here!"
+                        Text="{Binding NewPassword}" />
+                </Grid>
+                <Label
+                    FontSize="Body"
+                    IsVisible="{Binding VisibleErrorInfo, Mode=OneWay}"
+                    TextColor="Red">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="icofont" Text="{StaticResource InfoCircle}" />
+                            <Span Text="{Binding TextErrorInfo, StringFormat=' {0}', Mode=OneWay}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button Command="{Binding PasswordChangeCommand}" Text="Password change" />
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+
+</ContentPage>
