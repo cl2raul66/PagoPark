@@ -3,15 +3,45 @@
     x:Class="PagoPark.Views.PgPay"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:PagoPark.ViewModels"
-    Title="Agregar pago"
-    Shell.PresentationMode="ModalAnimated">
+    Title="Pay"
+    Shell.NavBarIsVisible="False">
 
-    <VerticalStackLayout>
+    <Grid
+        Padding="14,0"
+        RowDefinitions="auto,*,auto"
+        RowSpacing="14">
         <Label
-            HorizontalOptions="Center"
-            Text="Welcome to Agregar pago!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+            Grid.Row="1"
+            FontSize="Title"
+            Text="Pay"
+            TextColor="{StaticResource Secondary}"
+            VerticalOptions="Start" />
+        <CarouselView Grid.Row="1" ItemsSource="{Binding WeekDays}">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!--  Aquí puedes personalizar cómo se ve cada día de la semana  -->
+                        <!--  Por ejemplo, puedes tener un Label que muestre el nombre del día  -->
+                        <Label Text="{Binding DayName}" />
+                        <!--  Y otro Label que muestre alguna información específica de ese día  -->
+                        <Label Text="{Binding DayInfo}" />
+                    </Grid>
+
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+        <Frame Grid.Row="2" Padding="14">
+            <VerticalStackLayout Spacing="8">
+                <Label
+                    FontSize="Subtitle"
+                    Text="Quick access:"
+                    TextColor="{StaticResource Secondary}" />
+                <Button
+                    Command="{Binding}"
+                    IsEnabled="{Binding HasVehicle, Mode=OneWay}"
+                    Text="Set payment" />
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
 
 </ContentPage>

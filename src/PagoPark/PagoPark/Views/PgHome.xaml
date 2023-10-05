@@ -5,35 +5,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Home"
-    x:DataType="vm:PgHomeViewModel">
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
-    </Shell.BackButtonBehavior>
+    x:DataType="vm:PgHomeViewModel"
+    Shell.NavBarIsVisible="False">
 
-    <Grid Padding="16">
+    <Grid
+        Padding="14,0"
+        RowDefinitions="auto,*,auto"
+        RowSpacing="14">
         <Label
+            Grid.Row="1"
             FontSize="Title"
             HorizontalOptions="Center"
             Text="Welcome to PagoPark!"
             TextColor="{StaticResource Secondary}"
             VerticalOptions="Start" />
-        <Frame VerticalOptions="End">
+        <Frame Grid.Row="2" Padding="14">
             <VerticalStackLayout Spacing="8">
+                <Label
+                    FontSize="Subtitle"
+                    Text="Quick access:"
+                    TextColor="{StaticResource Secondary}" />
                 <Button
                     Command="{Binding GoToPayCommand}"
                     IsEnabled="{Binding HasVehicle, Mode=OneWay}"
-                    Text="Agregar pago" />
-                <Button
-                    Command="{Binding GoToDetailPayCommand}"
-                    IsEnabled="{Binding HasVehicle, Mode=OneWay}"
-                    Text="Registro de Pagos" />
+                    Text="Add payment" />
                 <Button
                     Command="{Binding GoToShareCommand}"
                     IsEnabled="{Binding HasVehicle, Mode=OneWay}"
-                    Text="Reportes" />
-                <RoundRectangle BackgroundColor="{StaticResource Gray200}" HeightRequest="2" />
-                <Button Command="{Binding GoToManageVehiclesCommand}" Text="Administrar vehículos" />
-                <Button Command="{Binding GoToManageUserCommand}" Text="Administrar usuario" />
+                    Text="Reports" />
             </VerticalStackLayout>
         </Frame>
     </Grid>

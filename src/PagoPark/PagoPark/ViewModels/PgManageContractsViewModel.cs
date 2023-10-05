@@ -8,11 +8,11 @@ using System.Collections.ObjectModel;
 
 namespace PagoPark.ViewModels;
 
-public partial class PgManageVehiclesViewModel : ObservableRecipient
+public partial class PgManageContractsViewModel : ObservableRecipient
 {
     readonly ILiteDbVehiclesServices vehiclesServ;
 
-    public PgManageVehiclesViewModel(ILiteDbVehiclesServices vehiclesServices)
+    public PgManageContractsViewModel(ILiteDbVehiclesServices vehiclesServices)
     {
         IsActive = true;
         vehiclesServ = vehiclesServices;
@@ -38,7 +38,7 @@ public partial class PgManageVehiclesViewModel : ObservableRecipient
     protected override void OnActivated()
     {
         base.OnActivated();
-        WeakReferenceMessenger.Default.Register<PgManageVehiclesViewModel, VehicleDemo, string>(this, nameof(PgAddVehicle), (r, m) =>
+        WeakReferenceMessenger.Default.Register<PgManageContractsViewModel, VehicleDemo, string>(this, nameof(PgAddVehicle), (r, m) =>
         {
             if (vehiclesServ.Exist(m.LicensePlate))
             {

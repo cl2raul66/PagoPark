@@ -11,7 +11,6 @@ namespace PagoPark.ViewModels;
 
 public partial class PgAddVehicleViewModel : ObservableValidator
 {
-
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsEnableSave))]
     [Required]

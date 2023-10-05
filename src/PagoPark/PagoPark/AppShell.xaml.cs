@@ -1,19 +1,18 @@
 ﻿using PagoPark.Views;
 
-namespace PagoPark
-{
-    public partial class AppShell : Shell
-    {
-        public AppShell()
-        {
-            InitializeComponent();
+namespace PagoPark;
 
-            Routing.RegisterRoute(nameof(PgHome), typeof(PgHome));
-            Routing.RegisterRoute(nameof(PgManageUser), typeof(PgManageUser));
-            Routing.RegisterRoute(nameof(PgManageVehicles), typeof(PgManageVehicles));
-            Routing.RegisterRoute(nameof(PgAddVehicle), typeof(PgAddVehicle));
-            Routing.RegisterRoute(nameof(PgDetailPay), typeof(PgDetailPay));
-            Routing.RegisterRoute(nameof(PgPay), typeof(PgPay));
-        }
+public partial class AppShell : Shell
+{
+    public AppShell()
+    {
+        InitializeComponent();
+
+        Routing.RegisterRoute(nameof(PgSingIn), typeof(PgSingIn));
+        Routing.RegisterRoute(nameof(PgManageUser), typeof(PgManageUser));
+        Routing.RegisterRoute(nameof(PgManageContracts), typeof(PgManageContracts));
+        Routing.RegisterRoute(nameof(PgAddVehicle), typeof(PgAddVehicle));
+        Routing.RegisterRoute(nameof(PgManageCarPark), typeof(PgManageCarPark));
+        Routing.RegisterRoute(nameof(PgAddPay), typeof(PgAddPay));
     }
 }

@@ -62,10 +62,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\ManageCarPark\PgAddPay.xaml.cs">
+	    <DependentUpon>PgAddPay.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PgManageCarPark.xaml.cs">
+	    <DependentUpon>PgManageCarPark.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PgManageContracts.xaml.cs">
+	    <DependentUpon>PgManageContracts.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PgSettings.xaml.cs">
+	    <DependentUpon>PgSettings.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\ManageVehicles\PgAddVehicle.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\PgDetailPay.xaml">
+	  <MauiXaml Update="Views\PgManageCarPark.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PgHome.xaml">
@@ -74,13 +89,19 @@
 	  <MauiXaml Update="Views\PgManageUser.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\PgManageVehicles.xaml">
+	  <MauiXaml Update="Views\PgManageContracts.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ManageCarPark\PgAddPay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PgPay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PgSingIn.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PgSettings.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

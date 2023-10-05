@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgAddPay"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
+    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Add payment"
+    x:DataType="vm:PgAddPayViewModel"
+    Shell.PresentationMode="ModalAnimated">
+
+    <Grid
+        Padding="16"
+        RowDefinitions="auto,*,auto"
+        RowSpacing="16">
+        <Label
+            FontSize="Title"
+            HorizontalOptions="Center"
+            Text="Add payment"
+            TextColor="{StaticResource Secondary}"
+            VerticalOptions="Center" />
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="16">
+                <Grid RowDefinitions="auto, auto">
+                    <Label
+                        Grid.Row="0"
+                        FontSize="Subtitle"
+                        Text="Vehicle: *" />
+                    <Picker
+                        Title="Select vehicle"
+                        Grid.Row="1"
+                        ItemsSource="{Binding VehicleList, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedVehicle}" />
+                </Grid>
+                <Grid RowDefinitions="auto, auto">
+                    <Label
+                        Grid.Row="0"
+                        FontSize="Subtitle"
+                        Text="Pay: *" />
+                    <Entry
+                        Grid.Row="1"
+                        Keyboard="Numeric"
+                        Placeholder="0.00"
+                        Text="{Binding Pay}" />
+                </Grid>
+                <Grid RowDefinitions="auto, auto">
+                    <Label
+                        Grid.Row="0"
+                        FontSize="Subtitle"
+                        Text="Observations: " />
+                    <Editor
+                        Grid.Row="1"
+                        Placeholder="Write your observation here!"
+                        Text="{Binding Observations}" />
+                </Grid>
+                <Label
+                    FontSize="Body"
+                    IsVisible="{Binding IsVisibleInfo, Mode=OneWay}"
+                    TextColor="Red">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="icofont" Text="{StaticResource InfoCircle}" />
+                            <Span Text=" Enter the required data (*)" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Frame Grid.Row="2">
+            <VerticalStackLayout Spacing="8">
+                <Button
+                    Command="{Binding SaveCommand}"
+                    FontSize="Subtitle"
+                    IsEnabled="{Binding SelectedVehicle, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
+                    Text="Save" />
+                <Button
+                    Command="{Binding CancelCommand}"
+                    FontSize="Subtitle"
+                    Text="Cancel" />
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+
+</ContentPage>

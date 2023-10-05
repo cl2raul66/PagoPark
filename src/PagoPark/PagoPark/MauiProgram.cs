@@ -23,22 +23,23 @@ namespace PagoPark
 
             builder.Services.AddSingleton<IAuthService, AuthService>();
             builder.Services.AddSingleton<ILiteDbVehiclesServices, LiteDbVehiclesServices>();
+            builder.Services.AddSingleton<ILiteDbCarParkRecordService, LiteDbCarParkRecordService>();
 
             builder.Services.AddTransient<PgSingInViewModel>();
             builder.Services.AddTransient<PgHomeViewModel>();
             builder.Services.AddSingleton<PgManageUserViewModel>();
-            builder.Services.AddSingleton<PgManageVehiclesViewModel>();
+            builder.Services.AddSingleton<PgManageContractsViewModel>();
             builder.Services.AddSingleton<PgAddVehicleViewModel>();
-            //builder.Services.AddSingleton<PgDetailPayViewModel>();
-            //builder.Services.AddSingleton<PgPayViewModel>();
+            builder.Services.AddSingleton<PgManageCarParkViewModel>();
+            builder.Services.AddSingleton<PgAddPayViewModel>();
 
             builder.Services.AddTransient<PgSingIn>();
             builder.Services.AddTransient<PgHome>();
             builder.Services.AddSingleton<PgManageUser>();
-            builder.Services.AddSingleton<PgManageVehicles>();
+            builder.Services.AddSingleton<PgManageContracts>();
             builder.Services.AddSingleton<PgAddVehicle>();
-            //builder.Services.AddSingleton<PgDetailPay>();
-            //builder.Services.AddSingleton<PgPay>();
+            builder.Services.AddSingleton<PgManageCarPark>();
+            builder.Services.AddSingleton<PgAddPay>();
 
 #if DEBUG
             builder.Logging.AddDebug();

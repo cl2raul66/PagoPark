@@ -8,12 +8,16 @@ namespace PagoPark.ViewModels;
 
 public partial class PgHomeViewModel : ObservableRecipient
 {
+    readonly IAuthService authServ;
     readonly ILiteDbVehiclesServices vehiclesServ;
 
-    public PgHomeViewModel(ILiteDbVehiclesServices vehiclesServices)
+    public PgHomeViewModel(IAuthService authService, ILiteDbVehiclesServices vehiclesServices)
     {
         IsActive = true;
+        authServ = authService;
         vehiclesServ = vehiclesServices;
+
+        _ = GoToSingin();
         HasVehicle = vehiclesServ.Any();
     }
 
@@ -23,13 +27,14 @@ public partial class PgHomeViewModel : ObservableRecipient
     [RelayCommand]
     async Task GoToPay()
     {
-        await Shell.Current.GoToAsync(nameof(PgPay), true);
+        var send = new Dictionary<string, object> { { nameof(PgAddPay), vehiclesServ.GetAll().Reverse().ToArray() } };
+        await Shell.Current.GoToAsync($"{nameof(PgManageCarPark)}/{nameof(PgAddPay)}", true, send);
     }
     
     [RelayCommand]
-    async Task GoToDetailPay()
+    async Task GoToManageCarPark()
     {
-        await Shell.Current.GoToAsync(nameof(PgDetailPay), true);
+        await Shell.Current.GoToAsync(nameof(PgManageCarPark), true);
     }
     
     [RelayCommand]
@@ -41,7 +46,7 @@ public partial class PgHomeViewModel : ObservableRecipient
     [RelayCommand]
     async Task GoToManageVehicles()
     {
-        await Shell.Current.GoToAsync(nameof(PgManageVehicles), true);
+        await Shell.Current.GoToAsync(nameof(PgManageContracts), true);
     }
     
     [RelayCommand]
@@ -59,6 +64,14 @@ public partial class PgHomeViewModel : ObservableRecipient
             _ = bool.TryParse(m, out bool resul);
             r.HasVehicle = resul;
         });
+    }
+
+    async Task GoToSingin()
+    {
+        if (!authServ.LoadCurrentUser())
+        {
+            await Shell.Current.GoToAsync(nameof(PgSingIn), true);
+        }
     }
     #endregion
 }

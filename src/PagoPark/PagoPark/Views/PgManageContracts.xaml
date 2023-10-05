@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgManageContracts"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:PagoPark.Models"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
+    Title="Manage contracts"
+    x:DataType="vm:PgManageContractsViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding GotoAddvehicleCommand}" Text="Add">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="icofont" Glyph="{StaticResource Plus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <Grid
+        Padding="16"
+        RowDefinitions="*,auto"
+        RowSpacing="16">
+        <ScrollView>
+            <CollectionView
+                ItemsSource="{Binding Vehicles, Mode=OneWay}"
+                SelectedItem="{Binding SelectedVehicle}"
+                SelectionMode="Single">
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout
+                            HorizontalOptions="Center"
+                            Spacing="8"
+                            VerticalOptions="Center">
+                            <Image HeightRequest="72" WidthRequest="72">
+                                <Image.Source>
+                                    <FontImageSource
+                                        FontFamily="icofont"
+                                        Glyph="{StaticResource License}"
+                                        Color="{StaticResource Gray400}" />
+                                </Image.Source>
+                            </Image>
+                            <Label
+                                FontSize="Body"
+                                Text="There are no contracts!"
+                                TextColor="{StaticResource Gray500}" />
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Style="{StaticResource BorderItem}"
+                            Padding="8"
+                            StrokeShape="RoundRectangle 8">
+                            <Label
+                                x:Name="LabelTitle"
+                                FontAttributes="Bold"
+                                FontSize="Subtitle"
+                                Text="{Binding .}"
+                                TextColor="{StaticResource White}" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+        <Frame Grid.Row="1">
+            <VerticalStackLayout Spacing="8">
+                <Label
+                    FontSize="Subtitle"
+                    Text="Quick access:"
+                    TextColor="{StaticResource Secondary}" />
+                <Button
+                    Command="{Binding DeleteCommand}"
+                    FontSize="Subtitle"
+                    IsEnabled="{Binding IsEnableDelete, Mode=OneWay}"
+                    Text="Delete contract"
+                    TextColor="{StaticResource Black}" />
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+
+</ContentPage>

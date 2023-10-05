@@ -47,7 +47,7 @@ public partial class PgSingInViewModel : ObservableValidator
     {
         if (authServ.LoadCurrentUser())
         {
-            await Shell.Current.GoToAsync(nameof(PgHome), true);
+            await Shell.Current.GoToAsync($"//nameof(PgHome)", true);
         }
     }
     #endregion

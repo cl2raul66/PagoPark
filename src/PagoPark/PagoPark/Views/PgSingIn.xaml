@@ -6,38 +6,44 @@
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Sing - In"
     x:DataType="vm:PgSingInViewModel"
-    Shell.NavBarIsVisible="False">
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
-    </Shell.BackButtonBehavior>
+    Shell.NavBarIsVisible="False"
+    Shell.PresentationMode="ModalAnimated">
 
-    <Grid Padding="16">
+    <Grid Padding="14" RowDefinitions="auto,*">
         <Label
+            Grid.Row="0"
             FontSize="Title"
             HorizontalOptions="Center"
             Text="Welcome to PagoPark!"
             TextColor="{StaticResource Secondary}" />
-        <Frame VerticalOptions="Center">
-            <VerticalStackLayout Spacing="16">
-                <Grid RowDefinitions="auto, auto">
-                    <Label Grid.Row="0" Text="Username: *" />
-                    <Entry
-                        Grid.Row="1"
-                        Placeholder="Write user name here!"
-                        Text="{Binding Username}" />
-                </Grid>
-                <Grid RowDefinitions="auto, auto">
-                    <Label Grid.Row="0" Text="Password: *" />
-                    <Entry
-                        Grid.Row="1"
-                        IsPassword="True"
-                        Placeholder="Write password here!"
-                        Text="{Binding Password}" />
-                </Grid>
-                <Button Command="{Binding LogInCommand}" Text="Log-in" />
-                <Button Command="{Binding SingInCommand}" Text="Sing-in" />
-            </VerticalStackLayout>
-        </Frame>
+        <VerticalStackLayout
+            Grid.Row="1"
+            Spacing="8"
+            VerticalOptions="Center">
+            <Grid RowDefinitions="auto, auto">
+                <Label Grid.Row="0" Text="Username: *" />
+                <Entry
+                    Grid.Row="1"
+                    Placeholder="Write user name here!"
+                    Text="{Binding Username}" />
+            </Grid>
+            <Grid RowDefinitions="auto, auto">
+                <Label Grid.Row="0" Text="Password: *" />
+                <Entry
+                    Grid.Row="1"
+                    IsPassword="True"
+                    Placeholder="Write password here!"
+                    Text="{Binding Password}" />
+            </Grid>
+            <Button Command="{Binding LogInCommand}" Text="Log-in" />
+            <Button Command="{Binding SingInCommand}" Text="Sing-in" />
+            <Label
+                Padding="8"
+                FontAttributes="Bold"
+                FontSize="Micro"
+                HorizontalTextAlignment="Center"
+                Text="by RandA Media Lab, Group" />
+        </VerticalStackLayout>
     </Grid>
 
 </ContentPage>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgSettings"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Setting"
+    Shell.NavBarIsVisible="False">
+
+    <Grid Padding="14">
+        <ScrollView>
+            <VerticalStackLayout Spacing="12">
+                <Grid RowDefinitions="auto,auto" RowSpacing="8">
+                    <Label
+                        Grid.Row="0"
+                        FontSize="Subtitle"
+                        Text="Usuarios:"
+                        TextColor="{StaticResource Primary}" />
+                    <VerticalStackLayout Grid.Row="1" Spacing="8">
+                        <Grid RowDefinitions="auto,auto" RowSpacing="4">
+                            <Button
+                                Grid.Row="0"
+                                Clicked="Button_Clicked"
+                                FontSize="Subtitle"
+                                Text="Manage users" />
+                            <Label
+                                Grid.Row="1"
+                                FontSize="Caption"
+                                Text="Tap to manage users."
+                                TextColor="{StaticResource Gray600}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+                <Grid RowDefinitions="auto,auto" RowSpacing="12">
+                    <Label
+                        Grid.Row="0"
+                        FontSize="Subtitle"
+                        Text="Contracts:"
+                        TextColor="{StaticResource Primary}" />
+                    <VerticalStackLayout Grid.Row="1" Spacing="8">
+                        <Grid RowDefinitions="auto,auto" RowSpacing="4">
+                            <Button
+                                Grid.Row="0"
+                                Clicked="Button_Clicked"
+                                FontSize="Subtitle"
+                                Text="Manage contracts" />
+                            <Label
+                                Grid.Row="1"
+                                FontSize="Caption"
+                                Text="Tap to manage contracts."
+                                TextColor="{StaticResource Gray600}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

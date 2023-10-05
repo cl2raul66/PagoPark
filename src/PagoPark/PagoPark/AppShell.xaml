@@ -7,9 +7,25 @@
     xmlns:v="clr-namespace:PagoPark.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Sing-In"
-        ContentTemplate="{DataTemplate v:PgSingIn}"
-        Route="PgSingIn" />
+    <TabBar>
+        <Tab Title="Home">
+            <Tab.Icon>
+                <FontImageSource FontFamily="icofont" Glyph="{StaticResource Home}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate v:PgHome}" Route="PgHome" />
+        </Tab>
+        <Tab Title="Pay">
+            <Tab.Icon>
+                <FontImageSource FontFamily="icofont" Glyph="{StaticResource Pay}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate v:PgPay}" Route="PgPay" />
+        </Tab>
+        <Tab Title="Settings">
+            <Tab.Icon>
+                <FontImageSource FontFamily="icofont" Glyph="{StaticResource UiSettings}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate v:PgSettings}" Route="PgSettings" />
+        </Tab>
+    </TabBar>
 
 </Shell>

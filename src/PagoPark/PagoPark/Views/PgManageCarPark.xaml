@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="PagoPark.Views.PgManageVehicles"
+    x:Class="PagoPark.Views.PgManageCarPark"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:PagoPark.Models"
+    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
-    Title="Manage vehicles"
-    x:DataType="vm:PgManageVehiclesViewModel">
+    Title="Payment Record"
+    x:DataType="vm:PgManageCarParkViewModel">
+
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding GotoAddvehicleCommand}" Text="Add">
+        <ToolbarItem Command="{Binding GotoPayCommand}" Text="Add">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="icofont" Glyph="{StaticResource Plus}" />
             </ToolbarItem.IconImageSource>
@@ -21,8 +23,8 @@
         RowSpacing="16">
         <ScrollView>
             <CollectionView
-                ItemsSource="{Binding Vehicles, Mode=OneWay}"
-                SelectedItem="{Binding SelectedVehicle}"
+                ItemsSource="{Binding Payment, Mode=OneWay}"
+                SelectedItem="{Binding SelectedPay}"
                 SelectionMode="Single">
                 <CollectionView.EmptyView>
                     <ContentView>
@@ -34,19 +36,19 @@
                                 <Image.Source>
                                     <FontImageSource
                                         FontFamily="icofont"
-                                        Glyph="{StaticResource VehicleDeliveryVan}"
+                                        Glyph="{StaticResource Pay}"
                                         Color="{StaticResource Gray400}" />
                                 </Image.Source>
                             </Image>
                             <Label
                                 FontSize="Body"
-                                Text="There are no vehicles!"
+                                Text="No payments made this week!"
                                 TextColor="{StaticResource Gray500}" />
                         </StackLayout>
                     </ContentView>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="model:CarParkRecordDemoView">
                         <Border
                             Style="{StaticResource BorderItem}"
                             Padding="8"
@@ -55,25 +57,31 @@
                                 x:Name="LabelTitle"
                                 FontAttributes="Bold"
                                 FontSize="Subtitle"
-                                Text="{Binding .}"
+                                Text="{Binding RegistrationDate}"
                                 TextColor="{StaticResource White}" />
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </ScrollView>
-        <Frame Grid.Row="1">
+        <Frame Grid.Row="1" Padding="16">
             <VerticalStackLayout Spacing="8">
                 <Label
                     FontSize="Subtitle"
                     Text="Quick access:"
                     TextColor="{StaticResource Secondary}" />
                 <Button
+                    Command="{Binding GotoDetailCommand}"
+                    FontSize="Subtitle"
+                    IsEnabled="{Binding SelectedPay, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
+                    Text="See details"
+                    TextColor="{StaticResource White}" />
+                <Button
                     Command="{Binding DeleteCommand}"
                     FontSize="Subtitle"
-                    IsEnabled="{Binding IsEnableDelete, Mode=OneWay}"
+                    IsEnabled="{Binding SelectedPay, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Delete vehicle"
-                    TextColor="{StaticResource Black}" />
+                    TextColor="{StaticResource White}" />
             </VerticalStackLayout>
         </Frame>
     </Grid>

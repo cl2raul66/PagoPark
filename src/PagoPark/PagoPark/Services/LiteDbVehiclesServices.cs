@@ -7,6 +7,7 @@ public interface ILiteDbVehiclesServices
 {
     bool Any();
     IEnumerable<VehicleDemo> GetAll();
+    VehicleDemo GetById(string id);
     bool Delete(string id);
     bool Exist(string id);
     bool Insert(VehicleDemo entity);
@@ -30,6 +31,8 @@ public class LiteDbVehiclesServices : ILiteDbVehiclesServices
     public bool Any() => collection.Count() > 0;
 
     public IEnumerable<VehicleDemo> GetAll() => collection.FindAll();
+
+    public VehicleDemo GetById(string id) => collection.FindById(id);
 
     public bool Insert(VehicleDemo entity) => collection.Insert(entity) is not null;
 
