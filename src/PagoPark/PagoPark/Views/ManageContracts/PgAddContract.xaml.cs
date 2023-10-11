@@ -2,9 +2,9 @@ using PagoPark.ViewModels;
 
 namespace PagoPark.Views;
 
-public partial class PgAddVehicle : ContentPage
+public partial class PgAddContract : ContentPage
 {
-	public PgAddVehicle(PgAddVehicleViewModel vm)
+	public PgAddContract(PgAddContractViewModel vm)
 	{
 		InitializeComponent();
 

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PagoPark.ViewModels;
 
-public partial class PgAddVehicleViewModel : ObservableValidator
+public partial class PgAddContractViewModel : ObservableValidator
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsEnableSave))]
@@ -62,7 +62,7 @@ public partial class PgAddVehicleViewModel : ObservableValidator
     [RelayCommand]
     async Task Save()
     {
-        bool resul = await SendVehicle();
+        bool resul = await SendContract();
         if (resul)
         {
             Licenseplate = null;
@@ -78,7 +78,7 @@ public partial class PgAddVehicleViewModel : ObservableValidator
     [RelayCommand]
     private async Task SaveClose()
     {
-        bool resul = await SendVehicle();
+        bool resul = await SendContract();
         if (resul)
         {
             await Cancel();
@@ -89,7 +89,7 @@ public partial class PgAddVehicleViewModel : ObservableValidator
     async Task Cancel() => await Shell.Current.GoToAsync("..", true);
 
     #region Extra
-    async Task<bool> SendVehicle()
+    async Task<bool> SendContract()
     {
         ValidateAllProperties();
 
@@ -103,8 +103,8 @@ public partial class PgAddVehicleViewModel : ObservableValidator
 
         var Weekfrequency = SelectedDaysOfWeek.Select(x => (int)Enum.Parse<DayOfWeek>(x as string)).ToArray();
 
-        VehicleDemo newVehicle = new(Licenseplate.Trim(), Enum.Parse<TypeVehicleFunction>(SelectedTypefunction), Enum.Parse<TypeLoadCapacity>(SelectedTypecapacity), Weekfrequency, double.Parse(Payperfrequency.Trim()), Owner.Trim());
-        return WeakReferenceMessenger.Default.Send(newVehicle, nameof(PgAddVehicle)) is not null;
+        ParkContract newVehicle = new(new Vehicle(Licenseplate.Trim(),Owner.Trim(), Enum.Parse<TypeVehicleFunction>(SelectedTypefunction), Enum.Parse<TypeLoadCapacity>(SelectedTypecapacity)), Weekfrequency, double.Parse(Payperfrequency.Trim()));
+        return WeakReferenceMessenger.Default.Send(newVehicle, nameof(PgAddContract)) is not null;
     }
     #endregion
 }

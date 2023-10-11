@@ -3,8 +3,8 @@
     x:Class="PagoPark.Views.PgAddPay"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:PagoPark.ViewModels"
     xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Add payment"
     x:DataType="vm:PgAddPayViewModel"
     Shell.PresentationMode="ModalAnimated">
@@ -21,7 +21,7 @@
             VerticalOptions="Center" />
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Spacing="16">
-                <Grid RowDefinitions="auto, auto">
+                <!--<Grid RowDefinitions="auto, auto">
                     <Label
                         Grid.Row="0"
                         FontSize="Subtitle"
@@ -31,7 +31,7 @@
                         Grid.Row="1"
                         ItemsSource="{Binding VehicleList, Mode=OneWay}"
                         SelectedItem="{Binding SelectedVehicle}" />
-                </Grid>
+                </Grid>-->
                 <Grid RowDefinitions="auto, auto">
                     <Label
                         Grid.Row="0"
@@ -71,7 +71,6 @@
                 <Button
                     Command="{Binding SaveCommand}"
                     FontSize="Subtitle"
-                    IsEnabled="{Binding SelectedVehicle, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Save" />
                 <Button
                     Command="{Binding CancelCommand}"

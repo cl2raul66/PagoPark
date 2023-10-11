@@ -10,44 +10,41 @@ namespace PagoPark.ViewModels;
 
 public partial class PgManageContractsViewModel : ObservableRecipient
 {
-    readonly ILiteDbVehiclesServices vehiclesServ;
+    readonly ILiteDbParkContractServices parkContractServ;
 
-    public PgManageContractsViewModel(ILiteDbVehiclesServices vehiclesServices)
+    public PgManageContractsViewModel(ILiteDbParkContractServices parkContractServices)
     {
         IsActive = true;
-        vehiclesServ = vehiclesServices;
-        Vehicles = vehiclesServ.Any() ? new(vehiclesServ.GetAll().Reverse()) : new();
+        parkContractServ = parkContractServices;
+        ParkContracts = parkContractServ.Any() ? new(parkContractServ.GetAll().Reverse()) : new();
     }
 
     [ObservableProperty]
-    ObservableCollection<VehicleDemo> vehicles;
+    ObservableCollection<ParkContract> parkContracts;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsEnableDelete))]
-    VehicleDemo selectedVehicle;
-
-    public bool IsEnableDelete => SelectedVehicle is not null;
+    ParkContract selectedContract;
 
     [RelayCommand]
-    async Task GotoAddvehicle() => await Shell.Current.GoToAsync(nameof(PgAddVehicle), true);
+    async Task GotoAddcontract() => await Shell.Current.GoToAsync(nameof(PgAddContract), true);
 
     [RelayCommand]
-    void Delete() => vehiclesServ.Delete(SelectedVehicle.LicensePlate);
+    void Delete() => parkContractServ.Delete(SelectedContract.Id);
 
     #region Extra
     protected override void OnActivated()
     {
         base.OnActivated();
-        WeakReferenceMessenger.Default.Register<PgManageContractsViewModel, VehicleDemo, string>(this, nameof(PgAddVehicle), (r, m) =>
+        WeakReferenceMessenger.Default.Register<PgManageContractsViewModel, ParkContract, string>(this, nameof(PgAddContract), (r, m) =>
         {
-            if (vehiclesServ.Exist(m.LicensePlate))
+            if (!string.IsNullOrEmpty(m.Id) && parkContractServ.Exist(m.Id))
             {
                 return;
             }
 
-            if (vehiclesServ.Insert(m))
+            if (parkContractServ.Insert(m))
             {
-                r.Vehicles.Insert(0, m);
+                r.ParkContracts.Insert(0, m);
             }
         });
     }

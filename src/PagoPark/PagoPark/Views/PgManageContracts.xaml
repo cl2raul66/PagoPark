@@ -4,11 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:PagoPark.Models"
+    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Manage contracts"
     x:DataType="vm:PgManageContractsViewModel">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding GotoAddvehicleCommand}" Text="Add">
+        <ToolbarItem Command="{Binding GotoAddcontractCommand}" Text="Add">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="icofont" Glyph="{StaticResource Plus}" />
             </ToolbarItem.IconImageSource>
@@ -21,8 +22,8 @@
         RowSpacing="16">
         <ScrollView>
             <CollectionView
-                ItemsSource="{Binding Vehicles, Mode=OneWay}"
-                SelectedItem="{Binding SelectedVehicle}"
+                ItemsSource="{Binding ParkContracts, Mode=OneWay}"
+                SelectedItem="{Binding SelectedContract}"
                 SelectionMode="Single">
                 <CollectionView.EmptyView>
                     <ContentView>
@@ -71,7 +72,7 @@
                 <Button
                     Command="{Binding DeleteCommand}"
                     FontSize="Subtitle"
-                    IsEnabled="{Binding IsEnableDelete, Mode=OneWay}"
+                    IsEnabled="{Binding SelectedContract, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Delete contract"
                     TextColor="{StaticResource Black}" />
             </VerticalStackLayout>

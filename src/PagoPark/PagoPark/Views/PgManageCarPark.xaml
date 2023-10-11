@@ -9,15 +9,15 @@
     Title="Payment Record"
     x:DataType="vm:PgManageCarParkViewModel">
 
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding GotoPayCommand}" Text="Add">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="icofont" Glyph="{StaticResource Plus}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
 
-    <Grid
+    <!--<Grid
         Padding="16"
         RowDefinitions="*,auto"
         RowSpacing="16">
@@ -84,6 +84,6 @@
                     TextColor="{StaticResource White}" />
             </VerticalStackLayout>
         </Frame>
-    </Grid>
+    </Grid>-->
 
 </ContentPage>

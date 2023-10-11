@@ -3,33 +3,86 @@
     x:Class="PagoPark.Views.PgPay"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:PagoPark.Models"
+    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Pay"
+    x:DataType="vm:PgPayViewModel"
     Shell.NavBarIsVisible="False">
 
     <Grid
-        Padding="14,0"
-        RowDefinitions="auto,*,auto"
+        Padding="14,10"
+        RowDefinitions="auto,*,auto,auto"
         RowSpacing="14">
         <Label
-            Grid.Row="1"
+            Grid.Row="0"
             FontSize="Title"
             Text="Pay"
-            TextColor="{StaticResource Secondary}"
-            VerticalOptions="Start" />
-        <CarouselView Grid.Row="1" ItemsSource="{Binding WeekDays}">
-            <CarouselView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <!--  Aquí puedes personalizar cómo se ve cada día de la semana  -->
-                        <!--  Por ejemplo, puedes tener un Label que muestre el nombre del día  -->
-                        <Label Text="{Binding DayName}" />
-                        <!--  Y otro Label que muestre alguna información específica de ese día  -->
-                        <Label Text="{Binding DayInfo}" />
-                    </Grid>
-
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
+            TextColor="{StaticResource Secondary}" />
+        <Frame Grid.Row="1">
+            <Grid RowDefinitions="*,auto" RowSpacing="8">
+                <CarouselView
+                    Grid.Row="0"
+                    CurrentItem="{Binding CurrentPayWeekDayItem, Mode=TwoWay}"
+                    IndicatorView="{x:Reference IndicatorOfCarousel}"
+                    ItemsSource="{Binding PayWeekDayItems, Mode=OneWay}">
+                    <CarouselView.EmptyView>
+                        <ContentView>
+                            <StackLayout
+                                HorizontalOptions="Center"
+                                Spacing="8"
+                                VerticalOptions="Center">
+                                <Image HeightRequest="72" WidthRequest="72">
+                                    <Image.Source>
+                                        <FontImageSource
+                                            FontFamily="icofont"
+                                            Glyph="{StaticResource Pay}"
+                                            Color="{StaticResource Gray400}" />
+                                    </Image.Source>
+                                </Image>
+                                <Label
+                                    FontSize="Body"
+                                    Text="No payments made this week!"
+                                    TextColor="{StaticResource Gray500}" />
+                            </StackLayout>
+                        </ContentView>
+                    </CarouselView.EmptyView>
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate x:DataType="model:PayWeekDayItem">
+                            <Grid RowDefinitions="auto,auto" RowSpacing="8">
+                                <Label
+                                    Grid.Row="0"
+                                    FontSize="Subtitle"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding DayOfWeek, Mode=OneWay}"
+                                    TextColor="{StaticResource Secondary}" />
+                                <ListView
+                                    Grid.Row="1"
+                                    ItemTapped="ListView_ItemTapped"
+                                    ItemsSource="{Binding Contracts, Mode=OneWay}"
+                                    SeparatorVisibility="None">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:PayContract">
+                                            <TextCell
+                                                Detail="{Binding Pay, Mode=OneWay, StringFormat='Amount paid: {0:F2}'}"
+                                                DetailColor="{StaticResource Primary}"
+                                                Text="{Binding Contract, Mode=OneWay}"
+                                                TextColor="{StaticResource Tertiary}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                <IndicatorView
+                    x:Name="IndicatorOfCarousel"
+                    Grid.Row="1"
+                    HorizontalOptions="Center"
+                    IndicatorColor="{StaticResource Primary}"
+                    SelectedIndicatorColor="{StaticResource Tertiary}" />
+            </Grid>
+        </Frame>
         <Frame Grid.Row="2" Padding="14">
             <VerticalStackLayout Spacing="8">
                 <Label
@@ -37,8 +90,8 @@
                     Text="Quick access:"
                     TextColor="{StaticResource Secondary}" />
                 <Button
-                    Command="{Binding}"
-                    IsEnabled="{Binding HasVehicle, Mode=OneWay}"
+                    Command="{Binding GoToSetPayCommand}"
+                    IsEnabled="{Binding SelectedContract, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Set payment" />
             </VerticalStackLayout>
         </Frame>

@@ -8,20 +8,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PagoPark.ViewModels;
 
-[QueryProperty(nameof(VehicleList),nameof(PgAddPay))]
+[QueryProperty(nameof(SelectedContract), nameof(SelectedContract))]
 public partial class PgAddPayViewModel : ObservableValidator
 {
     public PgAddPayViewModel()
     {
-        
+
     }
 
     [ObservableProperty]
-    VehicleDemo[] vehicleList;
-
-    [ObservableProperty]
-    [Required]
-    VehicleDemo selectedVehicle;
+    PayContract selectedContract;
 
     [ObservableProperty]
     [Required]
@@ -34,7 +30,8 @@ public partial class PgAddPayViewModel : ObservableValidator
     bool isVisibleInfo;
 
     [RelayCommand]
-    async Task Save() {
+    async Task Save()
+    {
         ValidateAllProperties();
 
         if (HasErrors)
@@ -45,11 +42,11 @@ public partial class PgAddPayViewModel : ObservableValidator
             return;
         }
 
-        CarParkRecord newRecord = null;
+        PayContract newPay = new() { Contract = SelectedContract.Contract, Pay = double.Parse(Pay), PayDate = DateTime.Now };
 
-        WeakReferenceMessenger.Default.Send(newRecord, nameof(PgAddPay));
+        WeakReferenceMessenger.Default.Send(newPay, nameof(PgAddPay));
     }
-    
+
     [RelayCommand]
     async Task Cancel() => await Shell.Current.GoToAsync("..", true);
 
@@ -57,10 +54,10 @@ public partial class PgAddPayViewModel : ObservableValidator
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        //if (e.PropertyName == nameof(VehicleList))
-        //{
-        //    var d = VehicleList;
-        //}
+        if (e.PropertyName == nameof(SelectedContract))
+        {
+            var d = SelectedContract.Contract.VehicleClient;
+        }
     }
     #endregion
 }
