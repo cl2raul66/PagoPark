@@ -22,6 +22,7 @@ namespace PagoPark
                 });
 
             builder.Services.AddSingleton<IAuthService, AuthService>();
+            builder.Services.AddSingleton<IDateService, DateService>();
             builder.Services.AddSingleton<ILiteDbParkContractServices, LiteDbParkContractServices>();
             builder.Services.AddSingleton<ILiteDbCarParkRecordService, LiteDbCarParkRecordService>();
 
