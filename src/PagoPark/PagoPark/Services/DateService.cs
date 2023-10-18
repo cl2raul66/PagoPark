@@ -4,6 +4,8 @@ namespace PagoPark.Services;
 
 public interface IDateService
 {
+    string GetDayOfWeek(DateTime d);
+    int GetNumberOfWeek(DateTime d);
     (DateTime, DateTime) GetWeekDates(int year, int weekNumber);
     int GetWeekNumber(DateTime date);
 }
@@ -11,15 +13,16 @@ public interface IDateService
 public class DateService : IDateService
 {
     readonly CultureInfo culture;
+    readonly Calendar calendar;
 
     public DateService()
     {
         this.culture = CultureInfo.CurrentCulture;
+        calendar = this.culture.Calendar;
     }
 
     public int GetWeekNumber(DateTime date)
-    {
-        Calendar calendar = this.culture.Calendar;
+    {        
         CalendarWeekRule weekRule = CalendarWeekRule.FirstDay;
         DayOfWeek firstDay = DayOfWeek.Sunday;
 
@@ -27,6 +30,10 @@ public class DateService : IDateService
 
         return weekNumber;
     }
+
+    public string GetDayOfWeek(DateTime d) => d.ToString("dddd", culture);
+
+    public int GetNumberOfWeek(DateTime d) => (int)d.DayOfWeek;
 
     public (DateTime, DateTime) GetWeekDates(int year, int weekNumber)
     {

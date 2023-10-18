@@ -8,6 +8,7 @@ public interface ILiteDbParkContractServices
     bool Any();
     IEnumerable<ParkContract> GetAll();
     ParkContract GetById(string id);
+    IEnumerable<ParkContract> GetByWeekNumber(int weeknumber);
     bool Delete(string id);
     bool Exist(string id);
     bool Insert(ParkContract entity);
@@ -33,6 +34,8 @@ public class LiteDbParkContractServices : ILiteDbParkContractServices
     public IEnumerable<ParkContract> GetAll() => collection.FindAll();
 
     public ParkContract GetById(string id) => collection.FindById(id);
+
+    public IEnumerable<ParkContract> GetByWeekNumber(int weeknumber) => collection.Find(x => x.WeekFrequency.Contains(weeknumber));
 
     public bool Insert(ParkContract entity)
     {

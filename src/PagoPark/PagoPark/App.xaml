@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
             <t:StringToAcronymConverter x:Key="StringToAcronym" />
             <t:FirstTwoCharsConverter x:Key="FirstTwoChars" />
+            <t:DateToDayofweekConverter x:Key="DateToDayofweek" />
             <Style x:Key="BorderItem" TargetType="Border">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>

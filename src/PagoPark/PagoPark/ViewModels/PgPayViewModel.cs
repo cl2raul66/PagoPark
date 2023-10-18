@@ -12,37 +12,24 @@ namespace PagoPark.ViewModels;
 public partial class PgPayViewModel : ObservableRecipient
 {
     readonly ILiteDbParkContractServices parkContractServ;
-    List<ParkContract> _contracts;
+    readonly ILiteDbDailyPaymentLogService dailyPaymentLogServ;
+    readonly IDateService dateServ;
 
-    public PgPayViewModel(ILiteDbParkContractServices parkContractServices)
+    public PgPayViewModel(ILiteDbParkContractServices parkContractServices, ILiteDbDailyPaymentLogService dailyPaymentLogService, IDateService dateService)
     {
         IsActive = true;
         parkContractServ = parkContractServices;
+        dailyPaymentLogServ = dailyPaymentLogService;
+        dateServ = dateService;
 
-        if (parkContractServ.Any())
-        {
-            _contracts = new(parkContractServ.GetAll());
-            GeneratePayWeekDayItems();
-            //PayWeekDayItems = new();
-
-            //foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-            //{
-            //    var d = parkContractServ.GetAll();
-            //    PayWeekDayItems.Add(new()
-            //    {
-            //        DayOfWeek = day.ToString(),
-            //        Contracts = d.Where(x => x.WeekFrequency.Contains((int)day)).Select(x => new PayContract() { Contract = x })
-            //    });
-            //}
-            CurrentPayWeekDayItem = PayWeekDayItems[(int)DateTime.Now.DayOfWeek];
-        }
+        GetThisweek();
     }
 
     [ObservableProperty]
-    ObservableCollection<PayWeekDayItem> payWeekDayItems;
+    ObservableCollection<DailyPaymentLog> thisWeek;
 
     [ObservableProperty]
-    PayWeekDayItem currentPayWeekDayItem;
+    DailyPaymentLog currentWeekDay;
 
     [ObservableProperty]
     PayContract selectedContract;
@@ -50,7 +37,7 @@ public partial class PgPayViewModel : ObservableRecipient
     [RelayCommand]
     async Task GoToSetPay()
     {
-        Dictionary<string, object> senderObject = new() { { nameof(SelectedContract),SelectedContract } };
+        Dictionary<string, object> senderObject = new() { { nameof(SelectedContract), SelectedContract } };
         await Shell.Current.GoToAsync(nameof(PgAddPay), true, senderObject);
     }
 
@@ -59,40 +46,50 @@ public partial class PgPayViewModel : ObservableRecipient
     {
         base.OnActivated();
         WeakReferenceMessenger.Default.Register<PgPayViewModel, PayContract, string>(this, nameof(PgAddPay), (r, m) =>
-        { 
-            UpdateContractPay(m.Contract.Id, m.Pay);
-            GeneratePayWeekDayItems();
+        {
+            GetThisweek();
+        });
+        WeakReferenceMessenger.Default.Register<PgPayViewModel, string, string>(this, nameof(PgManageContracts), (r, m) =>
+        {
+            if (m is not null && bool.Parse(m))
+            {
+                GetThisweek();
+            }
         });
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        if (e.PropertyName == nameof(CurrentPayWeekDayItem))
+        if (e.PropertyName == nameof(CurrentWeekDay))
         {
             SelectedContract = null;
         }
     }
 
-    void GeneratePayWeekDayItems()
+    void GetThisweek()
     {
-        var items = new List<PayWeekDayItem>();
-        for (int i = 0; i < 7; i++)
+        if (parkContractServ.Any())
         {
-            var contractsDueToday = _contracts.Where(c => c.WeekFrequency.Contains(i)).ToList();
-            var pContracts = contractsDueToday.Select(c => new PayContract { PayDate = DateTime.Today, Pay = c.PayPerFrequency, Contract = c });
-            items.Add(new PayWeekDayItem { DayOfWeek = ((DayOfWeek)i).ToString(), Contracts = pContracts });
-        }
-
-        PayWeekDayItems = new(items);
-    }
-
-    void UpdateContractPay(string contractId, double newPay)
-    {
-        var contract = _contracts.FirstOrDefault(c => c.Id == contractId);
-        if (contract != null)
-        {
-            contract.PayPerFrequency = newPay;
+            var getthisweek = dailyPaymentLogServ.GetThisWeek();
+            if (!getthisweek.Any())
+            {
+                var dateBeginEnd = dateServ.GetWeekDates(DateTime.Now.Year, dateServ.GetWeekNumber(DateTime.Now));
+                for (DateTime date = dateBeginEnd.Item1; date < dateBeginEnd.Item2; date = date.AddDays(1))
+                {
+                    var getbyweeknumber = parkContractServ.GetByWeekNumber(dateServ.GetNumberOfWeek(date));
+                    if (getbyweeknumber.Any())
+                    {
+                        foreach (var item in getbyweeknumber)
+                        {
+                            dailyPaymentLogServ.Insert(new DailyPaymentLog(date, item.Id ?? string.Empty));
+                        }
+                    }
+                }
+                getthisweek = dailyPaymentLogServ.GetThisWeek();
+            }
+            ThisWeek = new(getthisweek);
+            CurrentWeekDay = ThisWeek[(int)DateTime.Now.DayOfWeek];
         }
     }
     #endregion

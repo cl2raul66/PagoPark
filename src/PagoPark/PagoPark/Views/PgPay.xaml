@@ -23,9 +23,9 @@
             <Grid RowDefinitions="*,auto" RowSpacing="8">
                 <CarouselView
                     Grid.Row="0"
-                    CurrentItem="{Binding CurrentPayWeekDayItem, Mode=TwoWay}"
+                    CurrentItem="{Binding CurrentWeekDay, Mode=TwoWay}"
                     IndicatorView="{x:Reference IndicatorOfCarousel}"
-                    ItemsSource="{Binding PayWeekDayItems, Mode=OneWay}">
+                    ItemsSource="{Binding ThisWeek, Mode=OneWay}">
                     <CarouselView.EmptyView>
                         <ContentView>
                             <StackLayout
@@ -48,15 +48,15 @@
                         </ContentView>
                     </CarouselView.EmptyView>
                     <CarouselView.ItemTemplate>
-                        <DataTemplate x:DataType="model:PayWeekDayItem">
+                        <DataTemplate x:DataType="model:DailyPaymentLog">
                             <Grid RowDefinitions="auto,auto" RowSpacing="8">
                                 <Label
                                     Grid.Row="0"
                                     FontSize="Subtitle"
                                     HorizontalOptions="Center"
-                                    Text="{Binding DayOfWeek, Mode=OneWay}"
+                                    Text="{Binding PaymentDate, Mode=OneWay, Converter={StaticResource DateToDayofweek}}"
                                     TextColor="{StaticResource Secondary}" />
-                                <ListView
+                                <!--<ListView
                                     Grid.Row="1"
                                     ItemTapped="ListView_ItemTapped"
                                     ItemsSource="{Binding Contracts, Mode=OneWay}"
@@ -70,7 +70,7 @@
                                                 TextColor="{StaticResource Tertiary}" />
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
-                                </ListView>
+                                </ListView>-->
                             </Grid>
                         </DataTemplate>
                     </CarouselView.ItemTemplate>

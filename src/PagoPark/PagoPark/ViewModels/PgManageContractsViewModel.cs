@@ -45,6 +45,7 @@ public partial class PgManageContractsViewModel : ObservableRecipient
             if (parkContractServ.Insert(m))
             {
                 r.ParkContracts.Insert(0, m);
+                WeakReferenceMessenger.Default.Send(true.ToString(), nameof(PgManageContracts));
             }
         });
     }

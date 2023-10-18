@@ -24,24 +24,24 @@ namespace PagoPark
             builder.Services.AddSingleton<IAuthService, AuthService>();
             builder.Services.AddSingleton<IDateService, DateService>();
             builder.Services.AddSingleton<ILiteDbParkContractServices, LiteDbParkContractServices>();
-            builder.Services.AddSingleton<ILiteDbCarParkRecordService, LiteDbCarParkRecordService>();
+            builder.Services.AddSingleton<ILiteDbDailyPaymentLogService, LiteDbDailyPaymentLogService>();
 
-            builder.Services.AddTransient<PgHomeViewModel>();
-            builder.Services.AddTransient<PgPayViewModel>();
-            builder.Services.AddSingleton<PgAddPayViewModel>();
+            builder.Services.AddSingleton<PgHomeViewModel>();
+            builder.Services.AddSingleton<PgPayViewModel>();
+            builder.Services.AddTransient<PgAddPayViewModel>();
             builder.Services.AddTransient<PgSingInViewModel>();
-            builder.Services.AddSingleton<PgManageUserViewModel>();
-            builder.Services.AddSingleton<PgManageContractsViewModel>();
-            builder.Services.AddSingleton<PgAddContractViewModel>();
+            builder.Services.AddTransient<PgManageUserViewModel>();
+            builder.Services.AddTransient<PgManageContractsViewModel>();
+            builder.Services.AddTransient<PgAddContractViewModel>();
             //builder.Services.AddSingleton<PgManageCarParkViewModel>();
 
-            builder.Services.AddTransient<PgHome>();
-            builder.Services.AddTransient<PgPay>();
-            builder.Services.AddSingleton<PgAddPay>();
+            builder.Services.AddSingleton<PgHome>();
+            builder.Services.AddSingleton<PgPay>();
+            builder.Services.AddTransient<PgAddPay>();
             builder.Services.AddTransient<PgSingIn>();
-            builder.Services.AddSingleton<PgManageUser>();
-            builder.Services.AddSingleton<PgManageContracts>();
-            builder.Services.AddSingleton<PgAddContract>();
+            builder.Services.AddTransient<PgManageUser>();
+            builder.Services.AddTransient<PgManageContracts>();
+            builder.Services.AddTransient<PgAddContract>();
             //builder.Services.AddSingleton<PgManageCarPark>();
 
 #if DEBUG

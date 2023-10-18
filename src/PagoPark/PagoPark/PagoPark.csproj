@@ -62,6 +62,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Models\DataUser.designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>DataUser.dbml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Pay\PgAddPay.xaml.cs">
 	    <DependentUpon>PgAddPay.xaml</DependentUpon>
 	  </Compile>
@@ -107,6 +112,22 @@
 	  <MauiXaml Update="Views\PgSettings.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Models\DataUser.dbml">
+	    <Generator>MSLinqToSQLGenerator</Generator>
+	    <LastGenOutput>DataUser.designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Service Include="{3259aa49-8aa1-44d3-9025-a0b520596a8c}" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\Dto\" />
+	  <Folder Include="Models\Observables\" />
 	</ItemGroup>
 
 </Project>

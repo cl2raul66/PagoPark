@@ -1,14 +1,20 @@
 ﻿using LiteDB;
 using PagoPark.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PagoPark.Services;
 
-public class LiteDbDailyPaymentLogService
+public interface ILiteDbDailyPaymentLogService
+{
+    bool Any();
+    bool Delete(string id);
+    bool Exist(string id);
+    IEnumerable<DailyPaymentLog> GetAll();
+    IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek);
+    IEnumerable<DailyPaymentLog> GetThisWeek();
+    bool Insert(DailyPaymentLog m);
+}
+
+public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
 {
     readonly IDateService dateServ;
     readonly ILiteCollection<DailyPaymentLog> collection;
@@ -34,16 +40,23 @@ public class LiteDbDailyPaymentLogService
     {
         DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
         DateTime endOfWeek = startOfWeek.AddDays(7);
-        return collection.Find(x => x.PaymentDate >= startOfWeek && x.PaymentDate < endOfWeek);
+        var resul = collection.FindAll().Where(x => x.PaymentDate >= startOfWeek && x.PaymentDate < endOfWeek).ToList();
+        return resul;
     }
 
-    public IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek) {
+    public IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek)
+    {
         var weekBeginEnd = dateServ.GetWeekDates(year, numberweek);
         return collection.Find(x => x.PaymentDate >= weekBeginEnd.Item1 && x.PaymentDate < weekBeginEnd.Item2);
     }
 
-    public bool Insert(DailyPaymentLog entity) => collection.Insert(entity) is not null;
-    public bool Insert(IEnumerable<DailyPaymentLog> entities) => collection.InsertBulk(entities) > 0;
+    public bool Insert(DailyPaymentLog m) {
+        if (string.IsNullOrEmpty(m.Id))
+        {
+            m.Id = ObjectId.NewObjectId().ToString();
+        }
+        return collection.Insert(m) is not null;
+    }
 
     public bool Delete(string id) => collection.Delete(id);
 
