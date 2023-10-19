@@ -7,7 +7,8 @@
     Title="Sing - In"
     x:DataType="vm:PgSingInViewModel"
     Shell.NavBarIsVisible="False"
-    Shell.PresentationMode="ModalAnimated">
+    Shell.PresentationMode="Animated"
+    Shell.TabBarIsVisible="False">
 
     <Grid Padding="14" RowDefinitions="auto,*">
         <Label

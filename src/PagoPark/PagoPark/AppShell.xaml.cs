@@ -12,7 +12,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(PgManageUser), typeof(PgManageUser));
         Routing.RegisterRoute(nameof(PgManageContracts), typeof(PgManageContracts));
         Routing.RegisterRoute(nameof(PgAddContract), typeof(PgAddContract));
-        //Routing.RegisterRoute(nameof(PgManageCarPark), typeof(PgManageCarPark));
         Routing.RegisterRoute(nameof(PgAddPay), typeof(PgAddPay));
     }
 }
