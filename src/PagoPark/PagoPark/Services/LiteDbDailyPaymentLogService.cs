@@ -11,6 +11,7 @@ public interface ILiteDbDailyPaymentLogService
     IEnumerable<DailyPaymentLog> GetAll();
     IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek);
     IEnumerable<DailyPaymentLog> GetThisWeek();
+    IEnumerable<DailyPaymentLog> GetByDate(DateTime date);
     bool Insert(DailyPaymentLog m);
 }
 
@@ -40,9 +41,11 @@ public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
     {
         DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
         DateTime endOfWeek = startOfWeek.AddDays(7);
-        var resul = collection.FindAll().Where(x => x.PaymentDate >= startOfWeek && x.PaymentDate < endOfWeek).ToList();
+        var resul = collection.FindAll().Where(x => x.PaymentDate >= startOfWeek && x.PaymentDate < endOfWeek);
         return resul;
     }
+
+    public IEnumerable<DailyPaymentLog> GetByDate(DateTime date) => collection.FindAll().Where(x => DateTimeToCustomString(x.PaymentDate) == DateTimeToCustomString(date));
 
     public IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek)
     {
@@ -50,7 +53,8 @@ public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
         return collection.Find(x => x.PaymentDate >= weekBeginEnd.Item1 && x.PaymentDate < weekBeginEnd.Item2);
     }
 
-    public bool Insert(DailyPaymentLog m) {
+    public bool Insert(DailyPaymentLog m)
+    {
         if (string.IsNullOrEmpty(m.Id))
         {
             m.Id = ObjectId.NewObjectId().ToString();
@@ -61,4 +65,10 @@ public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
     public bool Delete(string id) => collection.Delete(id);
 
     public bool Exist(string id) => collection.FindById(id) is not null;
+
+    #region Extra
+    string DateTimeToCustomString(DateTime datetime) => datetime.ToString("yyyyMMdd");
+
+    DateTime CustomStringToDateTime(string customstring) => new DateTime(int.Parse(customstring[..4]), int.Parse(customstring[4..5]), int.Parse(customstring[6..]));
+    #endregion
 }

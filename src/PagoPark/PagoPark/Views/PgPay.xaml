@@ -48,29 +48,48 @@
                         </ContentView>
                     </CarouselView.EmptyView>
                     <CarouselView.ItemTemplate>
-                        <DataTemplate x:DataType="model:DailyPaymentLog">
-                            <Grid RowDefinitions="auto,auto" RowSpacing="8">
+                        <DataTemplate>
+                            <Grid RowDefinitions="auto,*" RowSpacing="8">
                                 <Label
                                     Grid.Row="0"
                                     FontSize="Subtitle"
                                     HorizontalOptions="Center"
-                                    Text="{Binding PaymentDate, Mode=OneWay, Converter={StaticResource DateToDayofweek}}"
+                                    Text="{Binding ., Mode=OneWay, Converter={StaticResource DateToDayofweek}}"
                                     TextColor="{StaticResource Secondary}" />
-                                <!--<ListView
+                                <CollectionView
                                     Grid.Row="1"
-                                    ItemTapped="ListView_ItemTapped"
-                                    ItemsSource="{Binding Contracts, Mode=OneWay}"
-                                    SeparatorVisibility="None">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:PayContract">
-                                            <TextCell
-                                                Detail="{Binding Pay, Mode=OneWay, StringFormat='Amount paid: {0:F2}'}"
-                                                DetailColor="{StaticResource Primary}"
-                                                Text="{Binding Contract, Mode=OneWay}"
-                                                TextColor="{StaticResource Tertiary}" />
+                                    ItemsSource="{Binding Paymentlogs, Mode=OneWay}"
+                                    SelectionChanged="CollectionView_SelectionChanged">
+                                    <CollectionView.EmptyView>
+                                        <ContentView>
+                                            <StackLayout
+                                                HorizontalOptions="Center"
+                                                Spacing="8"
+                                                VerticalOptions="Center">
+                                                <Image HeightRequest="72" WidthRequest="72">
+                                                    <Image.Source>
+                                                        <FontImageSource
+                                                            FontFamily="icofont"
+                                                            Glyph="{StaticResource Pay}"
+                                                            Color="{StaticResource Gray400}" />
+                                                    </Image.Source>
+                                                </Image>
+                                                <Label
+                                                    FontSize="Body"
+                                                    Text="No payments made this week!"
+                                                    TextColor="{StaticResource Gray500}" />
+                                            </StackLayout>
+                                        </ContentView>
+                                    </CollectionView.EmptyView>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:DailyPaymentLog">
+                                            <VerticalStackLayout>
+                                                <Label Text="{Binding ParkContractId, Mode=OneWay}" TextColor="{StaticResource Tertiary}" />
+                                                <Label Text="{Binding Amount, Mode=OneWay, StringFormat='Amount paid: {0:F2}'}" TextColor="{StaticResource Primary}" />
+                                            </VerticalStackLayout>
                                         </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>-->
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
                             </Grid>
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
@@ -91,7 +110,7 @@
                     TextColor="{StaticResource Secondary}" />
                 <Button
                     Command="{Binding GoToSetPayCommand}"
-                    IsEnabled="{Binding SelectedContract, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
+                    IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Set payment" />
             </VerticalStackLayout>
         </Frame>

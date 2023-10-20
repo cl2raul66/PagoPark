@@ -4,7 +4,6 @@ namespace PagoPark.Views;
 
 public partial class PgHome : ContentPage
 {
-
     public PgHome(PgHomeViewModel vm)
     {
         InitializeComponent();
@@ -12,5 +11,9 @@ public partial class PgHome : ContentPage
         BindingContext = vm;
     }
 
-    protected override bool OnBackButtonPressed() { return true; }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Shell.SetTabBarIsVisible(Shell.Current.CurrentItem.CurrentItem, true);
+    }
 }
