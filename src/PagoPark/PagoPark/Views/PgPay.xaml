@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:PagoPark.Models"
     xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:tool="clr-namespace:PagoPark.Tools"
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Pay"
     x:DataType="vm:PgPayViewModel"
@@ -19,14 +20,82 @@
             FontSize="Title"
             Text="Pay"
             TextColor="{StaticResource Secondary}" />
-        <Frame Grid.Row="1">
-            <Grid RowDefinitions="*,auto" RowSpacing="8">
-                <CarouselView
-                    Grid.Row="0"
-                    CurrentItem="{Binding CurrentWeekDay, Mode=TwoWay}"
-                    IndicatorView="{x:Reference IndicatorOfCarousel}"
-                    ItemsSource="{Binding ThisWeek, Mode=OneWay}">
-                    <CarouselView.EmptyView>
+
+        <Grid
+            Grid.Row="1"
+            RowDefinitions="auto,*"
+            RowSpacing="8">
+            <Frame
+                Grid.Row="0"
+                Padding="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Start">
+                <CollectionView
+                    ItemsSource="{Binding ThisWeek, Mode=OneWay}"
+                    SelectedItem="{Binding CurrentWeekDay, Mode=TwoWay}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <tool:DayOfWeek2TemplateSelector>
+                            <tool:DayOfWeek2TemplateSelector.StartItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Style="{StaticResource BorderItem}"
+                                        Padding="12,10"
+                                        HorizontalOptions="Center"
+                                        StrokeShape="RoundRectangle 8,0,8,0">
+                                        <Label
+                                            x:Name="LabelTitle"
+                                            FontAttributes="Bold"
+                                            FontSize="Subtitle"
+                                            Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
+                                            TextColor="{StaticResource White}" />
+                                    </Border>
+                                </DataTemplate>
+                            </tool:DayOfWeek2TemplateSelector.StartItemTemplate>
+                            <tool:DayOfWeek2TemplateSelector.EndItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Style="{StaticResource BorderItem}"
+                                        Padding="12,10"
+                                        HorizontalOptions="Center"
+                                        StrokeShape="RoundRectangle 0,8,0,8">
+                                        <Label
+                                            x:Name="LabelTitle"
+                                            FontAttributes="Bold"
+                                            FontSize="Subtitle"
+                                            Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
+                                            TextColor="{StaticResource White}" />
+                                    </Border>
+                                </DataTemplate>
+                            </tool:DayOfWeek2TemplateSelector.EndItemTemplate>
+                            <tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Style="{StaticResource BorderItem}"
+                                        Padding="12,10"
+                                        HorizontalOptions="Center">
+                                        <Label
+                                            x:Name="LabelTitle"
+                                            FontAttributes="Bold"
+                                            FontSize="Subtitle"
+                                            Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
+                                            TextColor="{StaticResource White}" />
+                                    </Border>
+                                </DataTemplate>
+                            </tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
+                        </tool:DayOfWeek2TemplateSelector>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+            <Frame Grid.Row="1">
+                <CollectionView
+                    ItemsSource="{Binding Paymentlogs, Mode=OneWay}"
+                    SelectedItem="{Binding SelectedPaymentLog, Mode=TwoWay}"
+                    SelectionMode="Single">
+                    <CollectionView.EmptyView>
                         <ContentView>
                             <StackLayout
                                 HorizontalOptions="Center"
@@ -46,62 +115,18 @@
                                     TextColor="{StaticResource Gray500}" />
                             </StackLayout>
                         </ContentView>
-                    </CarouselView.EmptyView>
-                    <CarouselView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid RowDefinitions="auto,*" RowSpacing="8">
-                                <Label
-                                    Grid.Row="0"
-                                    FontSize="Subtitle"
-                                    HorizontalOptions="Center"
-                                    Text="{Binding ., Mode=OneWay, Converter={StaticResource DateToDayofweek}}"
-                                    TextColor="{StaticResource Secondary}" />
-                                <CollectionView
-                                    Grid.Row="1"
-                                    ItemsSource="{Binding Paymentlogs, Mode=OneWay}"
-                                    SelectionChanged="CollectionView_SelectionChanged">
-                                    <CollectionView.EmptyView>
-                                        <ContentView>
-                                            <StackLayout
-                                                HorizontalOptions="Center"
-                                                Spacing="8"
-                                                VerticalOptions="Center">
-                                                <Image HeightRequest="72" WidthRequest="72">
-                                                    <Image.Source>
-                                                        <FontImageSource
-                                                            FontFamily="icofont"
-                                                            Glyph="{StaticResource Pay}"
-                                                            Color="{StaticResource Gray400}" />
-                                                    </Image.Source>
-                                                </Image>
-                                                <Label
-                                                    FontSize="Body"
-                                                    Text="No payments made this week!"
-                                                    TextColor="{StaticResource Gray500}" />
-                                            </StackLayout>
-                                        </ContentView>
-                                    </CollectionView.EmptyView>
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:DailyPaymentLog">
-                                            <VerticalStackLayout>
-                                                <Label Text="{Binding ParkContractId, Mode=OneWay}" TextColor="{StaticResource Tertiary}" />
-                                                <Label Text="{Binding Amount, Mode=OneWay, StringFormat='Amount paid: {0:F2}'}" TextColor="{StaticResource Primary}" />
-                                            </VerticalStackLayout>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-                            </Grid>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:DailyPaymentLog">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding ParkContractId, Mode=OneWay}" TextColor="{StaticResource Tertiary}" />
+                                <Label Text="{Binding Amount, Mode=OneWay, StringFormat='Amount paid: {0:F2}'}" TextColor="{StaticResource Primary}" />
+                            </VerticalStackLayout>
                         </DataTemplate>
-                    </CarouselView.ItemTemplate>
-                </CarouselView>
-                <IndicatorView
-                    x:Name="IndicatorOfCarousel"
-                    Grid.Row="1"
-                    HorizontalOptions="Center"
-                    IndicatorColor="{StaticResource Primary}"
-                    SelectedIndicatorColor="{StaticResource Tertiary}" />
-            </Grid>
-        </Frame>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+        </Grid>
         <Frame Grid.Row="2" Padding="14">
             <VerticalStackLayout Spacing="8">
                 <Label

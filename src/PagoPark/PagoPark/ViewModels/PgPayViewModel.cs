@@ -75,27 +75,8 @@ public partial class PgPayViewModel : ObservableRecipient
     {
         if (parkContractServ.Any())
         {
-            //var getthisweek = dailyPaymentLogServ.GetThisWeek();
-            //if (!getthisweek.Any())
-            //{
-            //    var dateBeginEnd = dateServ.GetWeekDates(DateTime.Now.Year, dateServ.GetWeekNumber(DateTime.Now));
-            //    for (DateTime date = dateBeginEnd.Item1; date < dateBeginEnd.Item2; date = date.AddDays(1))
-            //    {
-            //        var getbyweeknumber = parkContractServ.GetByWeekNumber(dateServ.GetNumberOfWeek(date));
-            //        if (getbyweeknumber.Any())
-            //        {
-            //            foreach (var item in getbyweeknumber)
-            //            {
-            //                dailyPaymentLogServ.Insert(new DailyPaymentLog(date, item.Id ?? string.Empty));
-            //            }
-            //        }
-            //    }
-            //    getthisweek = dailyPaymentLogServ.GetThisWeek();
-            //}
-            //ThisWeek = new(getthisweek);
-
             var dateBeginEnd = dateServ.GetWeekDates(DateTime.Now.Year, dateServ.GetWeekNumber(DateTime.Now));
-            bool hasPaymentLog = dailyPaymentLogServ.GetByDate(CurrentWeekDay)?.Any() ?? false; 
+            bool hasPaymentLog = dailyPaymentLogServ.GetByDate(DateTime.Now)?.Any() ?? false;
             for (DateTime date = dateBeginEnd.Item1; date <= dateBeginEnd.Item2; date = date.AddDays(1))
             {
                 ThisWeek.Add(date);
@@ -105,7 +86,7 @@ public partial class PgPayViewModel : ObservableRecipient
                     foreach (var item in getbyweeknumber)
                     {
                         dailyPaymentLogServ.Insert(new(date, item.Id));
-                    }                    
+                    }
                 }
             }
             CurrentWeekDay = ThisWeek[(int)DateTime.Now.DayOfWeek];

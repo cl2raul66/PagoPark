@@ -8,7 +8,7 @@ public class DateToDayofweekConverter : IValueConverter
     {
         if (value is DateTime fecha && fecha.Year > DateTime.Now.Year - 1)
         {
-            return fecha.ToString("dddd", CultureInfo.CurrentCulture).ToUpper();
+            return fecha.ToString("dddd", CultureInfo.CurrentCulture)[..2].ToUpper();
         }
         //throw new InvalidOperationException("El valor debe ser una fecha");
         return null;
