@@ -1,23 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using PagoPark.Models;
+using PagoPark.Models.Observables;
 using PagoPark.Views;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace PagoPark.ViewModels;
 
-[QueryProperty(nameof(SelectedContract), nameof(SelectedContract))]
+[QueryProperty(nameof(SelectedPaymentLog), nameof(SelectedPaymentLog))]
 public partial class PgAddPayViewModel : ObservableValidator
 {
-    public PgAddPayViewModel()
-    {
-
-    }
-
     [ObservableProperty]
-    PayContract selectedContract;
+    DailyPaymentLogView selectedPaymentLog;
 
     [ObservableProperty]
     [Required]
@@ -42,22 +36,14 @@ public partial class PgAddPayViewModel : ObservableValidator
             return;
         }
 
-        PayContract newPay = new() { Contract = SelectedContract.Contract, Pay = double.Parse(Pay), PayDate = DateTime.Now };
+        SelectedPaymentLog.RecordDate = DateTime.Now;
+        SelectedPaymentLog.Amount = double.Parse(Pay);
+        SelectedPaymentLog.Note = Observations;
 
-        WeakReferenceMessenger.Default.Send(newPay, nameof(PgAddPay));
+        WeakReferenceMessenger.Default.Send(SelectedPaymentLog, nameof(PgAddPay));
+        await Cancel();
     }
 
     [RelayCommand]
     async Task Cancel() => await Shell.Current.GoToAsync("..", true);
-
-    #region Extra
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-        if (e.PropertyName == nameof(SelectedContract))
-        {
-            var d = SelectedContract.Contract.VehicleClient;
-        }
-    }
-    #endregion
 }

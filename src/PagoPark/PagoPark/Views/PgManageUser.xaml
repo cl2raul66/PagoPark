@@ -18,19 +18,21 @@
                 FontSize="Subtitle"
                 HeightRequest="56"
                 Text="{Binding Username, Mode=OneTime, Converter={StaticResource StringToAcronym}}"
-                TextColor="{StaticResource Primary}"
+                TextColor="{StaticResource Secondary}"
                 WidthRequest="56" />
             <Label
+                Style="{StaticResource LabelSubtitle}"
                 Grid.Row="1"
-                FontSize="Subtitle"
                 HorizontalOptions="Center"
-                Text="{Binding Username, Mode=OneTime, StringFormat='Usuario: {0}'}"
-                TextColor="{StaticResource Primary}" />
+                Text="{Binding Username, Mode=OneTime, StringFormat='Usuario: {0}'}" />
         </Grid>
         <Frame Grid.Row="1" VerticalOptions="Center">
             <VerticalStackLayout Spacing="16">
                 <Grid RowDefinitions="auto, auto">
-                    <Label Grid.Row="0" Text="Old password: *" />
+                    <Label
+                        Style="{StaticResource LabelSubtitle}"
+                        Grid.Row="0"
+                        Text="Old password: *" />
                     <Entry
                         Grid.Row="1"
                         IsPassword="True"
@@ -38,7 +40,10 @@
                         Text="{Binding OldPassword}" />
                 </Grid>
                 <Grid RowDefinitions="auto, auto">
-                    <Label Grid.Row="0" Text="New password: *" />
+                    <Label
+                        Style="{StaticResource LabelSubtitle}"
+                        Grid.Row="0"
+                        Text="New password: *" />
                     <Entry
                         Grid.Row="1"
                         IsPassword="True"

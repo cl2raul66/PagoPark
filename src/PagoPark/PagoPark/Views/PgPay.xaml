@@ -13,14 +13,23 @@
 
     <Grid
         Padding="14,10"
-        RowDefinitions="auto,*,auto,auto"
+        RowDefinitions="auto,*,auto"
         RowSpacing="14">
-        <Label
+        <Grid
             Grid.Row="0"
-            FontSize="Title"
-            Text="Pay"
-            TextColor="{StaticResource Secondary}" />
-
+            RowDefinitions="auto, auto"
+            RowSpacing="8">
+            <Label
+                Style="{StaticResource LabelSubtitle}"
+                Grid.Row="0"
+                Text="Summary:" />
+            <VerticalStackLayout Grid.Row="1" Spacing="8">
+                <Label
+                    Style="{StaticResource LabelCaptionBody}"
+                    HorizontalOptions="Center"
+                    Text="Quienes no an pagado!" />
+            </VerticalStackLayout>
+        </Grid>
         <Grid
             Grid.Row="1"
             RowDefinitions="auto,*"
@@ -90,7 +99,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </Frame>
-            <Frame Grid.Row="1">
+            <Frame Grid.Row="1" Padding="8">
                 <CollectionView
                     ItemsSource="{Binding Paymentlogs, Mode=OneWay}"
                     SelectedItem="{Binding SelectedPaymentLog, Mode=TwoWay}"
@@ -106,22 +115,27 @@
                                         <FontImageSource
                                             FontFamily="icofont"
                                             Glyph="{StaticResource Pay}"
-                                            Color="{StaticResource Gray400}" />
+                                            Color="{StaticResource Gray300}" />
                                     </Image.Source>
                                 </Image>
-                                <Label
-                                    FontSize="Body"
-                                    Text="No payments made this week!"
-                                    TextColor="{StaticResource Gray500}" />
+                                <Label Style="{StaticResource LabelDisableBody}" Text="No payments made this week!" />
                             </StackLayout>
                         </ContentView>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:DailyPaymentLog">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding ParkContractId, Mode=OneWay}" TextColor="{StaticResource Tertiary}" />
-                                <Label Text="{Binding Amount, Mode=OneWay, StringFormat='Amount paid: {0:F2}'}" TextColor="{StaticResource Primary}" />
-                            </VerticalStackLayout>
+                            <Border
+                                Style="{StaticResource BorderItem}"
+                                Padding="8"
+                                StrokeShape="RoundRectangle 8">
+                                <VerticalStackLayout Spacing="0">
+                                    <Label Style="{StaticResource BorderItemSubtitle}" Text="{Binding ., Mode=OneWay}" />
+                                    <Label
+                                        Style="{StaticResource BorderItemBody}"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding Amount, Mode=OneWay, TargetNullValue='Amount paid: 0.00', StringFormat='Amount paid: {0:F2}'}" />
+                                </VerticalStackLayout>
+                            </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
@@ -129,14 +143,12 @@
         </Grid>
         <Frame Grid.Row="2" Padding="14">
             <VerticalStackLayout Spacing="8">
-                <Label
-                    FontSize="Subtitle"
-                    Text="Quick access:"
-                    TextColor="{StaticResource Secondary}" />
+                <Label Style="{StaticResource LabelSubtitle}" Text="Quick access:" />
                 <Button
                     Command="{Binding GoToSetPayCommand}"
                     IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Set payment" />
+                <Button Text="Set payment for all week" />
             </VerticalStackLayout>
         </Frame>
     </Grid>

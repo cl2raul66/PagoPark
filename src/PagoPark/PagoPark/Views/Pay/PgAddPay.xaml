@@ -16,27 +16,25 @@
         <Label
             FontSize="Title"
             HorizontalOptions="Center"
-            Text="Add payment"
+            Text="Set payment"
             TextColor="{StaticResource Secondary}"
             VerticalOptions="Center" />
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Spacing="16">
-                <!--<Grid RowDefinitions="auto, auto">
-                    <Label
-                        Grid.Row="0"
-                        FontSize="Subtitle"
-                        Text="Vehicle: *" />
-                    <Picker
-                        Title="Select vehicle"
-                        Grid.Row="1"
-                        ItemsSource="{Binding VehicleList, Mode=OneWay}"
-                        SelectedItem="{Binding SelectedVehicle}" />
-                </Grid>-->
+                <Label
+                    Grid.Row="0"
+                    FontAttributes="Bold"
+                    FontSize="Subtitle"
+                    HorizontalOptions="Center"
+                    Text="{Binding SelectedPaymentLog, Mode=OneWay}"
+                    TextColor="{StaticResource Tertiary}"
+                    TextTransform="Uppercase" />
                 <Grid RowDefinitions="auto, auto">
                     <Label
                         Grid.Row="0"
                         FontSize="Subtitle"
-                        Text="Pay: *" />
+                        Text="Pay: *"
+                        TextColor="{StaticResource Tertiary}" />
                     <Entry
                         Grid.Row="1"
                         Keyboard="Numeric"
@@ -47,7 +45,8 @@
                     <Label
                         Grid.Row="0"
                         FontSize="Subtitle"
-                        Text="Observations: " />
+                        Text="Observations: "
+                        TextColor="{StaticResource Tertiary}" />
                     <Editor
                         Grid.Row="1"
                         Placeholder="Write your observation here!"

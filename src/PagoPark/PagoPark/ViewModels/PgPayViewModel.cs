@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using PagoPark.Models;
+using PagoPark.Models.Observables;
 using PagoPark.Services;
 using PagoPark.Views;
 using System.Collections.ObjectModel;
@@ -32,10 +33,10 @@ public partial class PgPayViewModel : ObservableRecipient
     DateTime currentWeekDay;
 
     [ObservableProperty]
-    ObservableCollection<DailyPaymentLog> paymentlogs;
+    ObservableCollection<DailyPaymentLogView> paymentlogs;
 
     [ObservableProperty]
-    DailyPaymentLog selectedPaymentLog;
+    DailyPaymentLogView selectedPaymentLog;
 
     [RelayCommand]
     async Task GoToSetPay()
@@ -48,9 +49,17 @@ public partial class PgPayViewModel : ObservableRecipient
     protected override void OnActivated()
     {
         base.OnActivated();
-        WeakReferenceMessenger.Default.Register<PgPayViewModel, PayContract, string>(this, nameof(PgAddPay), (r, m) =>
+        WeakReferenceMessenger.Default.Register<PgPayViewModel, DailyPaymentLogView, string>(this, nameof(PgAddPay), (r, m) =>
         {
-            GetThisweek();
+            DailyPaymentLog log = new(m.PaymentDate, m.ParkContractId, m.RecordDate, m.Amount, m.Note)
+            {
+                Id = m.Id
+            };
+            if (dailyPaymentLogServ.Upsert(log))
+            {
+                Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay).Select(x => new DailyPaymentLogView(parkContractServ, x)));
+            }
+
         });
         WeakReferenceMessenger.Default.Register<PgPayViewModel, string, string>(this, nameof(PgManageContracts), (r, m) =>
         {
@@ -67,7 +76,7 @@ public partial class PgPayViewModel : ObservableRecipient
         if (e.PropertyName == nameof(CurrentWeekDay))
         {
             SelectedPaymentLog = null;
-            Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay));
+            Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay).Select(x => new DailyPaymentLogView(parkContractServ, x)));
         }
     }
 
@@ -76,16 +85,19 @@ public partial class PgPayViewModel : ObservableRecipient
         if (parkContractServ.Any())
         {
             var dateBeginEnd = dateServ.GetWeekDates(DateTime.Now.Year, dateServ.GetWeekNumber(DateTime.Now));
-            bool hasPaymentLog = dailyPaymentLogServ.GetByDate(DateTime.Now)?.Any() ?? false;
-            for (DateTime date = dateBeginEnd.Item1; date <= dateBeginEnd.Item2; date = date.AddDays(1))
+            bool hasPaymentLog = dailyPaymentLogServ.GetThisWeek()?.Any() ?? false;
+            if (ThisWeek.Count < 7)
             {
-                ThisWeek.Add(date);
-                if (!hasPaymentLog)
+                for (DateTime date = dateBeginEnd.Item1; date <= dateBeginEnd.Item2; date = date.AddDays(1))
                 {
-                    var getbyweeknumber = parkContractServ.GetByWeekNumber(dateServ.GetNumberOfWeek(date));
-                    foreach (var item in getbyweeknumber)
+                    ThisWeek.Add(date);
+                    if (!hasPaymentLog)
                     {
-                        dailyPaymentLogServ.Insert(new(date, item.Id));
+                        var getbyweeknumber = parkContractServ.GetByWeekNumber(dateServ.GetNumberOfWeek(date));
+                        foreach (var item in getbyweeknumber)
+                        {
+                            dailyPaymentLogServ.Upsert(new(date, item.Id));
+                        }
                     }
                 }
             }

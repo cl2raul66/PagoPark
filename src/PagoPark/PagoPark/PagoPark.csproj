@@ -127,7 +127,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Models\Dto\" />
-	  <Folder Include="Models\Observables\" />
 	</ItemGroup>
 
 </Project>

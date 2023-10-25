@@ -10,43 +10,37 @@
         <VerticalStackLayout Spacing="12">
             <Grid RowDefinitions="auto,auto" RowSpacing="8">
                 <Label
+                    Style="{StaticResource LabelSubtitle}"
                     Grid.Row="0"
-                    FontSize="Subtitle"
-                    Text="Usuarios:"
-                    TextColor="{StaticResource Primary}" />
+                    Text="Usuarios:" />
                 <VerticalStackLayout Grid.Row="1" Spacing="8">
                     <Grid RowDefinitions="auto,auto" RowSpacing="4">
                         <Button
                             Grid.Row="0"
                             Clicked="Button_Clicked"
-                            FontSize="Subtitle"
                             Text="Manage users" />
                         <Label
+                            Style="{StaticResource LabelCaption}"
                             Grid.Row="1"
-                            FontSize="Caption"
-                            Text="Tap to manage users."
-                            TextColor="{StaticResource Gray600}" />
+                            Text="Tap to manage users." />
                     </Grid>
                 </VerticalStackLayout>
             </Grid>
             <Grid RowDefinitions="auto,auto" RowSpacing="12">
                 <Label
+                    Style="{StaticResource LabelSubtitle}"
                     Grid.Row="0"
-                    FontSize="Subtitle"
-                    Text="Contracts:"
-                    TextColor="{StaticResource Primary}" />
+                    Text="Contracts:" />
                 <VerticalStackLayout Grid.Row="1" Spacing="8">
                     <Grid RowDefinitions="auto,auto" RowSpacing="4">
                         <Button
                             Grid.Row="0"
                             Clicked="Button_Clicked"
-                            FontSize="Subtitle"
                             Text="Manage contracts" />
                         <Label
+                            Style="{StaticResource LabelCaption}"
                             Grid.Row="1"
-                            FontSize="Caption"
-                            Text="Tap to manage contracts."
-                            TextColor="{StaticResource Gray600}" />
+                            Text="Tap to manage contracts." />
                     </Grid>
                 </VerticalStackLayout>
             </Grid>

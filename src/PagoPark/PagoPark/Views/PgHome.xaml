@@ -13,17 +13,13 @@
         RowDefinitions="auto,*,auto"
         RowSpacing="14">
         <Label
+            Style="{StaticResource LabelTitle}"
             Grid.Row="1"
-            FontSize="Title"
             HorizontalOptions="Center"
-            Text="Welcome to PagoPark!"
-            TextColor="{StaticResource Secondary}" />
+            Text="Welcome to PagoPark!" />
         <Frame Grid.Row="2" Padding="14">
             <VerticalStackLayout Spacing="8">
-                <Label
-                    FontSize="Subtitle"
-                    Text="Quick access:"
-                    TextColor="{StaticResource Secondary}" />
+                <Label Style="{StaticResource LabelSubtitle}" Text="Quick access:" />
                 <Button Text="Add payment" />
                 <Button Text="Reports" />
             </VerticalStackLayout>
