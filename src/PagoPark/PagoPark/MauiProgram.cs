@@ -29,20 +29,20 @@ namespace PagoPark
             builder.Services.AddSingleton<PgHomeViewModel>();
             builder.Services.AddSingleton<PgPayViewModel>();
             builder.Services.AddTransient<PgAddPayViewModel>();
+            builder.Services.AddTransient<PgAddPayForAllWeekViwModel>();
             builder.Services.AddTransient<PgSingInViewModel>();
             builder.Services.AddTransient<PgManageUserViewModel>();
             builder.Services.AddTransient<PgManageContractsViewModel>();
             builder.Services.AddTransient<PgAddContractViewModel>();
-            //builder.Services.AddSingleton<PgManageCarParkViewModel>();
 
             builder.Services.AddSingleton<PgHome>();
             builder.Services.AddSingleton<PgPay>();
             builder.Services.AddTransient<PgAddPay>();
+            builder.Services.AddTransient<PgAddPayForAllWeek>();
             builder.Services.AddTransient<PgSingIn>();
             builder.Services.AddTransient<PgManageUser>();
             builder.Services.AddTransient<PgManageContracts>();
             builder.Services.AddTransient<PgAddContract>();
-            //builder.Services.AddSingleton<PgManageCarPark>();
 
 #if DEBUG
             builder.Logging.AddDebug();

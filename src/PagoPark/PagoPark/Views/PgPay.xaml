@@ -147,7 +147,7 @@
                     Command="{Binding GoToSetPayCommand}"
                     IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
                     Text="Set payment" />
-                <Button Text="Set payment for all week" />
+                <Button Command="{Binding GoToSetPayAllWeekCommand}" Text="Set payment for all week" />
             </VerticalStackLayout>
         </Frame>
     </Grid>

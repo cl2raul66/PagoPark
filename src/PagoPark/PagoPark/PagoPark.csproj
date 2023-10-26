@@ -33,11 +33,11 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />-->
-		<MauiIcon Include="Resources\AppIcon\logo.svg" Color="#D9D8D7" />
+		<MauiIcon Include="Resources\AppIcon\logo.svg" Color="#D9D8D7"/>
 
 		<!-- Splash Screen -->
 		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
-		<MauiSplashScreen Include="Resources\Splash\logo.svg" Color="#56779c" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\logo.svg" Color="#D9D8D7" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -83,6 +83,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\ManageContracts\PgAddContract.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Pay\PgAddPayForAllWeek.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PgHome.xaml">

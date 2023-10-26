@@ -41,8 +41,15 @@ public partial class PgPayViewModel : ObservableRecipient
     [RelayCommand]
     async Task GoToSetPay()
     {
-        Dictionary<string, object> senderObject = new() { { nameof(SelectedPaymentLog), SelectedPaymentLog } };
-        await Shell.Current.GoToAsync(nameof(PgAddPay), true, senderObject);
+        Dictionary<string, object> senderObjects = new() { { nameof(SelectedPaymentLog), SelectedPaymentLog } };
+        await Shell.Current.GoToAsync(nameof(PgAddPay), true, senderObjects);
+    }
+
+    [RelayCommand]
+    async Task GoToSetPayAllWeek()
+    {
+        Dictionary<string, object> senderObjects = new() { { "ParkContracts", parkContractServ.GetAll().ToList() } };
+        await Shell.Current.GoToAsync(nameof(PgAddPayForAllWeek), true, senderObjects);
     }
 
     #region Extra
@@ -60,6 +67,13 @@ public partial class PgPayViewModel : ObservableRecipient
                 Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay).Select(x => new DailyPaymentLogView(parkContractServ, x)));
             }
 
+        });
+        WeakReferenceMessenger.Default.Register<PgPayViewModel, string, string>(this, nameof(PgAddPayForAllWeek), (r, m) =>
+        {
+            if (m is not null && bool.Parse(m))
+            {
+                GetThisweek();
+            }
         });
         WeakReferenceMessenger.Default.Register<PgPayViewModel, string, string>(this, nameof(PgManageContracts), (r, m) =>
         {

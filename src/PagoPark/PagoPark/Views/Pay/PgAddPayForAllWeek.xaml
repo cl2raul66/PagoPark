@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="PagoPark.Views.PgAddPay"
+    x:Class="PagoPark.Views.PgAddPayForAllWeek"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
-    Title="Add payment"
-    x:DataType="vm:PgAddPayViewModel"
+    Title="Set payment for this week"
+    x:DataType="vm:PgAddPayForAllWeekViwModel"
     BackgroundColor="#CC401A24"
     Shell.PresentationMode="ModalAnimated">
 
@@ -21,25 +20,36 @@
             <Label
                 Style="{StaticResource LabelTitle}"
                 HorizontalOptions="Center"
-                Text="Set payment"
+                Text="Set payment for this week"
                 VerticalOptions="Center" />
             <VerticalStackLayout Grid.Row="1" Spacing="16">
+                <Grid RowDefinitions="auto, auto">
+                    <Label
+                        Style="{StaticResource LabelSubtitle}"
+                        Grid.Row="0"
+                        Text="Contract: *" />
+                    <Picker
+                        Title="Select a contract"
+                        Grid.Row="1"
+                        ItemsSource="{Binding ParkContracts, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedParkContract, Mode=TwoWay}" />
+                </Grid>
                 <Label
-                    Style="{StaticResource LabelCaption}"
+                    Style="{StaticResource LabelCaptionBody}"
                     Grid.Row="0"
                     HorizontalOptions="Center"
-                    Text="{Binding SelectedPaymentLog, Mode=OneWay}"
+                    Text="{Binding AmountTotal, Mode=OneWay}"
                     TextTransform="Uppercase" />
                 <Grid RowDefinitions="auto, auto">
                     <Label
                         Style="{StaticResource LabelSubtitle}"
                         Grid.Row="0"
-                        Text="Pay: *" />
+                        Text="Amount: *" />
                     <Entry
                         Grid.Row="1"
                         Keyboard="Numeric"
                         Placeholder="0.00"
-                        Text="{Binding Pay}" />
+                        Text="{Binding Amonunt}" />
                 </Grid>
                 <Grid RowDefinitions="auto, auto">
                     <Label
