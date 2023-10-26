@@ -7,20 +7,24 @@
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Add payment"
     x:DataType="vm:PgAddPayViewModel"
+    BackgroundColor="#CC401A24"
     Shell.PresentationMode="ModalAnimated">
 
-    <Grid
-        Padding="16"
-        RowDefinitions="auto,*,auto"
-        RowSpacing="16">
-        <Label
-            FontSize="Title"
-            HorizontalOptions="Center"
-            Text="Set payment"
-            TextColor="{StaticResource Secondary}"
-            VerticalOptions="Center" />
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Spacing="16">
+    <Frame
+        Margin="14,10"
+        Padding="14,10"
+        VerticalOptions="Center">
+        <Grid
+            RowDefinitions="auto,auto,auto"
+            RowSpacing="14"
+            VerticalOptions="End">
+            <Label
+                FontSize="Title"
+                HorizontalOptions="Center"
+                Text="Set payment"
+                TextColor="{StaticResource Secondary}"
+                VerticalOptions="Center" />
+            <VerticalStackLayout Grid.Row="1" Spacing="16">
                 <Label
                     Grid.Row="0"
                     FontAttributes="Bold"
@@ -64,9 +68,7 @@
                     </Label.FormattedText>
                 </Label>
             </VerticalStackLayout>
-        </ScrollView>
-        <Frame Grid.Row="2">
-            <VerticalStackLayout Spacing="8">
+            <VerticalStackLayout Grid.Row="2" Spacing="10">
                 <Button
                     Command="{Binding SaveCommand}"
                     FontSize="Subtitle"
@@ -76,7 +78,8 @@
                     FontSize="Subtitle"
                     Text="Cancel" />
             </VerticalStackLayout>
-        </Frame>
-    </Grid>
+        </Grid>
+    </Frame>
+
 
 </ContentPage>

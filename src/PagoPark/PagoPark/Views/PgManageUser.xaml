@@ -8,7 +8,7 @@
     Title="Administrar usuario"
     x:DataType="vm:PgManageUserViewModel">
 
-    <Grid Padding="16" RowDefinitions="auto,*">
+    <Grid Padding="14,10" RowDefinitions="auto,*">
         <Grid
             Grid.Row="0"
             RowDefinitions="auto,auto"
@@ -26,7 +26,10 @@
                 HorizontalOptions="Center"
                 Text="{Binding Username, Mode=OneTime, StringFormat='Usuario: {0}'}" />
         </Grid>
-        <Frame Grid.Row="1" VerticalOptions="Center">
+        <Frame
+            Grid.Row="1"
+            Padding="12"
+            VerticalOptions="Center">
             <VerticalStackLayout Spacing="16">
                 <Grid RowDefinitions="auto, auto">
                     <Label

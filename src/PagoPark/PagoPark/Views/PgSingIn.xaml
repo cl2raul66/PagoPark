@@ -13,7 +13,7 @@
         <BackButtonBehavior IsVisible="False" />
     </Shell.BackButtonBehavior>
 
-    <Grid Padding="14" RowDefinitions="auto,*">
+    <Grid Padding="14,10" RowDefinitions="auto,*">
         <Label
             Grid.Row="0"
             FontSize="Title"
