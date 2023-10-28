@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using PagoPark.Services;
 using PagoPark.Views;
@@ -22,6 +23,13 @@ public partial class PgHomeViewModel : ObservableRecipient
 
     [ObservableProperty]
     bool hasParkContracts;
+
+    [RelayCommand]
+    async Task GoToSetPayAllWeek()
+    {
+        Dictionary<string, object> senderObjects = new() { { "ParkContracts", parkContractServ.GetAll().ToList() } };
+        await Shell.Current.GoToAsync($"//{nameof(PgPay)}/{nameof(PgAddPayForAllWeek)}", true, senderObjects);
+    }
 
     #region Extra
     protected override void OnActivated()

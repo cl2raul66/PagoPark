@@ -27,7 +27,11 @@
                 <Label
                     Style="{StaticResource LabelCaptionBody}"
                     HorizontalOptions="Center"
-                    Text="Quienes no an pagado!" />
+                    Text="Not presented:" />
+                <Label
+                    Style="{StaticResource LabelCaptionBody}"
+                    HorizontalOptions="Center"
+                    Text="{Binding Unpaid, Mode=OneWay, StringFormat='Unpaid: {0}'}" />
             </VerticalStackLayout>
         </Grid>
         <Grid

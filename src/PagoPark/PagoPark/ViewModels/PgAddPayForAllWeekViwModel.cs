@@ -44,8 +44,8 @@ public partial class PgAddPayForAllWeekViwModel : ObservableValidator
             IsVisibleInfo = false;
             return;
         }
-
-        WeakReferenceMessenger.Default.Send(Guid.NewGuid().ToString(), nameof(PgAddPayForAllWeek));
+        var senderObj = Tuple.Create(SelectedParkContract.Id, double.Parse(Amonunt), Observations);
+        WeakReferenceMessenger.Default.Send(senderObj, nameof(PgAddPayForAllWeek));
         await Cancel();
     }
 

@@ -7,7 +7,7 @@
     Shell.NavBarIsVisible="False">
 
     <ScrollView Padding="14,10">
-        <VerticalStackLayout Spacing="12">
+        <VerticalStackLayout Spacing="14">
             <Grid RowDefinitions="auto,auto" RowSpacing="8">
                 <Label
                     Style="{StaticResource LabelSubtitle}"

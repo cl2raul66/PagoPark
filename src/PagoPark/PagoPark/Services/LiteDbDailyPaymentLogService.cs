@@ -12,6 +12,9 @@ public interface ILiteDbDailyPaymentLogService
     IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek);
     IEnumerable<DailyPaymentLog> GetThisWeek();
     IEnumerable<DailyPaymentLog> GetByDate(DateTime date);
+    IEnumerable<DailyPaymentLog> GetByParkContractId(string parkcontractid);
+    IEnumerable<string> GetParkContractIdByToday();
+
     bool Upsert(DailyPaymentLog m);
 }
 
@@ -52,6 +55,10 @@ public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
         var weekBeginEnd = dateServ.GetWeekDates(year, numberweek);
         return collection.Find(x => x.PaymentDate >= weekBeginEnd.Item1 && x.PaymentDate < weekBeginEnd.Item2);
     }
+
+    public IEnumerable<DailyPaymentLog> GetByParkContractId(string parkcontractid) => collection.Find(x => x.ParkContractId == parkcontractid);
+
+    public IEnumerable<string> GetParkContractIdByToday()=>collection.Find(x => x.PaymentDate <= DateTime.Now && (x.Amount == null || x.Amount == 0)).Select(x => x.ParkContractId);
 
     public bool Upsert(DailyPaymentLog m)
     {

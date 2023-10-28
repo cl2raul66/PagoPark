@@ -65,7 +65,7 @@
             </CollectionView>
         </ScrollView>
         <Frame Grid.Row="1" Padding="12">
-            <VerticalStackLayout Spacing="8">
+            <VerticalStackLayout Spacing="10">
                 <Label Style="{StaticResource LabelSubtitle}" Text="Quick access:" />
                 <Button
                     Command="{Binding DeleteCommand}"

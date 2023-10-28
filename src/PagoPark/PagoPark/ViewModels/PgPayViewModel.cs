@@ -38,6 +38,12 @@ public partial class PgPayViewModel : ObservableRecipient
     [ObservableProperty]
     DailyPaymentLogView selectedPaymentLog;
 
+    [ObservableProperty]
+    string unpaid;
+
+    [ObservableProperty]
+    string notPresented;
+
     [RelayCommand]
     async Task GoToSetPay()
     {
@@ -64,15 +70,24 @@ public partial class PgPayViewModel : ObservableRecipient
             };
             if (dailyPaymentLogServ.Upsert(log))
             {
-                Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay).Select(x => new DailyPaymentLogView(parkContractServ, x)));
+                GetPaymentlogs();
             }
 
         });
-        WeakReferenceMessenger.Default.Register<PgPayViewModel, string, string>(this, nameof(PgAddPayForAllWeek), (r, m) =>
+        WeakReferenceMessenger.Default.Register<PgPayViewModel, Tuple<string, double, string>, string>(this, nameof(PgAddPayForAllWeek), (r, m) =>
         {
-            if (m is not null && bool.Parse(m))
+            if (m is not null)
             {
-                GetThisweek();
+                var GetDailypaymentlog = dailyPaymentLogServ.GetByParkContractId(m.Item1);
+                double amountPart = m.Item2 / GetDailypaymentlog.Count();
+                foreach (var item in GetDailypaymentlog)
+                {
+                    DailyPaymentLog paymentLog = item;
+                    paymentLog.Amount = amountPart;
+                    paymentLog.Note = m.Item3;
+                    dailyPaymentLogServ.Upsert(paymentLog);
+                }
+                GetPaymentlogs();
             }
         });
         WeakReferenceMessenger.Default.Register<PgPayViewModel, string, string>(this, nameof(PgManageContracts), (r, m) =>
@@ -90,8 +105,13 @@ public partial class PgPayViewModel : ObservableRecipient
         if (e.PropertyName == nameof(CurrentWeekDay))
         {
             SelectedPaymentLog = null;
-            Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay).Select(x => new DailyPaymentLogView(parkContractServ, x)));
+            GetPaymentlogs();
         }
+    }
+
+    void GetPaymentlogs()
+    {
+        Paymentlogs = new(dailyPaymentLogServ.GetByDate(CurrentWeekDay).Select(x => new DailyPaymentLogView(parkContractServ, x)));
     }
 
     void GetThisweek()
@@ -116,7 +136,17 @@ public partial class PgPayViewModel : ObservableRecipient
                 }
             }
             CurrentWeekDay = ThisWeek[(int)DateTime.Now.DayOfWeek];
+            GetUnpaid();
         }
+    }
+
+    void GetUnpaid()
+    {
+        foreach (var item in dailyPaymentLogServ.GetParkContractIdByToday())
+        {
+            Unpaid += parkContractServ.GetById(item).VehicleClient + ", ";
+        }
+        Unpaid = Unpaid.TrimEnd(new char[] { ',' , ' ' });
     }
     #endregion
 }

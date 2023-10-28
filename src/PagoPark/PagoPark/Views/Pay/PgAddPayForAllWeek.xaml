@@ -10,8 +10,8 @@
     Shell.PresentationMode="ModalAnimated">
 
     <Frame
-        Margin="14,10"
-        Padding="14,10"
+        Margin="14"
+        Padding="12"
         VerticalOptions="Center">
         <Grid
             RowDefinitions="auto,auto,auto"
