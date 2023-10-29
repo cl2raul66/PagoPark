@@ -1,2 +1,2 @@
-# PagoPark
-PagoPark es una aplicación innovadora diseñada para facilitar el registro de pagos de camiones de carga por estacionamiento. Esta aplicación permite a los usuarios, ya sean dueños de camiones o administradores de estacionamientos, llevar un registro detallado de los pagos realizados.
+# PagoPark 
+PagoPark is an innovative app designed to make it easy to register freight truck payments for parking. This app allows users, whether they are truck owners or parking lot managers, to keep a detailed record of payments made.
