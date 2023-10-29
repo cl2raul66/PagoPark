@@ -22,16 +22,26 @@
             <Label
                 Style="{StaticResource LabelSubtitle}"
                 Grid.Row="0"
+                HorizontalOptions="Center"
                 Text="Summary:" />
             <VerticalStackLayout Grid.Row="1" Spacing="8">
-                <Label
-                    Style="{StaticResource LabelCaptionBody}"
-                    HorizontalOptions="Center"
-                    Text="Not presented:" />
-                <Label
-                    Style="{StaticResource LabelCaptionBody}"
-                    HorizontalOptions="Center"
-                    Text="{Binding Unpaid, Mode=OneWay, StringFormat='Unpaid: {0}'}" />
+                <Label Style="{StaticResource LabelCaptionBody}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Not presented:" />
+                            <Span Text="&#x0a;" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Style="{StaticResource LabelCaptionBody}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Unpaid:" />
+                            <Span Text="&#x0a;" />
+                            <Span Text="{Binding Unpaid, Mode=OneWay}" TextColor="{StaticResource Tertiary}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </VerticalStackLayout>
         </Grid>
         <Grid
@@ -136,6 +146,7 @@
                                 <Label Style="{StaticResource BorderItemSubtitle}" Text="{Binding ., Mode=OneWay}" />
                                 <Label
                                     Style="{StaticResource BorderItemBody}"
+                                    FontAttributes="Bold"
                                     HorizontalTextAlignment="End"
                                     Text="{Binding Amount, Mode=OneWay, TargetNullValue='Amount paid: 0.00', StringFormat='Amount paid: {0:F2}'}" />
                             </VerticalStackLayout>

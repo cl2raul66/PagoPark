@@ -8,6 +8,9 @@ public interface IDateService
     int GetNumberOfWeek(DateTime d);
     (DateTime, DateTime) GetWeekDates(int year, int weekNumber);
     int GetWeekNumber(DateTime date);
+    DateTime FirstSundayOfMonth();
+    (DateTime, DateTime) FirstLastDayOfMonth();
+    int TotalDays(int[] weekfrequency);
 }
 
 public class DateService : IDateService
@@ -22,7 +25,7 @@ public class DateService : IDateService
     }
 
     public int GetWeekNumber(DateTime date)
-    {        
+    {
         CalendarWeekRule weekRule = CalendarWeekRule.FirstDay;
         DayOfWeek firstDay = DayOfWeek.Sunday;
 
@@ -41,6 +44,34 @@ public class DateService : IDateService
         DateTime endDate = startDate.AddDays(6);
 
         return (startDate, endDate);
+    }
+
+    public DateTime FirstSundayOfMonth()
+    {
+        DateTime primerDiaDelMes = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+        return primerDiaDelMes.AddDays(((int)DayOfWeek.Sunday - (int)primerDiaDelMes.DayOfWeek + 7) % 7);
+    }
+
+    public (DateTime, DateTime) FirstLastDayOfMonth()
+    {
+        DateTime primerDiaDelMes = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+        DateTime ultimoDiaDelMes = primerDiaDelMes.AddMonths(1).AddDays(-1);
+        return (primerDiaDelMes, ultimoDiaDelMes);
+    }
+
+    public int TotalDays(int[] weekfrequency)
+    {
+        int asistencias = 0;
+        var dFL = FirstLastDayOfMonth();
+
+        foreach (var item in weekfrequency)
+        {
+            int diasHastaDiaDeLaSemana = (item - (int)dFL.Item1.DayOfWeek + 7) % 7;
+            DateTime primerDiaDeLaSemana = dFL.Item1.AddDays(diasHastaDiaDeLaSemana);
+            int diasEnElMes = DateTime.DaysInMonth(dFL.Item1.Year, dFL.Item1.Month);
+            asistencias += (diasEnElMes - (primerDiaDeLaSemana.Day - 1) + 6) / 7;
+        }
+        return asistencias;
     }
 
     private DateTime FirstDayOfWeek(int year, int weekNumber)

@@ -15,9 +15,6 @@
             <t:StringToAcronymConverter x:Key="StringToAcronym" />
             <t:FirstTwoCharsConverter x:Key="FirstTwoChars" />
             <t:DateToDayofweekConverter x:Key="DateToDayofweek" />
-            <Style TargetType="Frame">
-                <Setter Property="CornerRadius" Value="4" />
-            </Style>
             <Style TargetType="Button">
                 <Setter Property="FontSize" Value="Subtitle" />
             </Style>
@@ -43,7 +40,7 @@
             </Style>
             <Style x:Key="LabelCaption" TargetType="Label">
                 <Setter Property="FontSize" Value="Caption" />
-                <Setter Property="TextColor" Value="{StaticResource Secondary}" />
+                <Setter Property="TextColor" Value="{StaticResource Primary}" />
                 <Setter Property="FontAttributes" Value="Bold" />
             </Style>
             <Style x:Key="LabelDisableBody" TargetType="Label">

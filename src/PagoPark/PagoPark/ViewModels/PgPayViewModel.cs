@@ -142,11 +142,16 @@ public partial class PgPayViewModel : ObservableRecipient
 
     void GetUnpaid()
     {
-        foreach (var item in dailyPaymentLogServ.GetParkContractIdByToday())
+        if (ThisWeek.First().Date == CurrentWeekDay.Date)
+        {
+            Unpaid = "The day is not over!";
+            return;
+        }
+        foreach (var item in dailyPaymentLogServ.GetParkContractIdByDates(ThisWeek.First(), CurrentWeekDay).ToHashSet())
         {
             Unpaid += parkContractServ.GetById(item).VehicleClient + ", ";
         }
-        Unpaid = Unpaid.TrimEnd(new char[] { ',' , ' ' });
+        Unpaid = Unpaid.TrimEnd(new char[] { ',', ' ' });
     }
     #endregion
 }

@@ -14,9 +14,56 @@
         RowSpacing="14">
         <Label
             Style="{StaticResource LabelTitle}"
-            Grid.Row="1"
+            Grid.Row="0"
             HorizontalOptions="Center"
             Text="Welcome to PagoPark!" />
+
+        <Frame Grid.Row="1" VerticalOptions="Start">
+            <Grid RowDefinitions="auto,auto" RowSpacing="10">
+                <Label
+                    Style="{StaticResource LabelSubtitle}"
+                    Grid.Row="0"
+                    Text="Summary:" />
+                <VerticalStackLayout
+                    Grid.Row="1"
+                    Padding="8,0"
+                    Spacing="4">
+                    <Border
+                        Padding="6"
+                        BackgroundColor="{StaticResource Secondary}"
+                        StrokeShape="RoundRectangle 4">
+                        <Grid ColumnDefinitions="*,auto">
+                            <Label
+                                Style="{StaticResource LabelCaptionBody}"
+                                Text="Assists:"
+                                TextColor="{StaticResource White}" />
+                            <Label
+                                Style="{StaticResource LabelCaptionBody}"
+                                Grid.Column="1"
+                                Text="0 / 0"
+                                TextColor="{StaticResource Tertiary}" />
+                        </Grid>
+                    </Border>
+                    <Border
+                        Padding="6"
+                        BackgroundColor="{StaticResource Secondary}"
+                        StrokeShape="RoundRectangle 4">
+                        <Grid ColumnDefinitions="*,auto">
+                            <Label
+                                Style="{StaticResource LabelCaptionBody}"
+                                Text="Amount charged:"
+                                TextColor="{StaticResource White}" />
+                            <Label
+                                Style="{StaticResource LabelCaptionBody}"
+                                Grid.Column="1"
+                                Text="{Binding AmountCharged, Mode=OneWay}"
+                                TextColor="{StaticResource Tertiary}" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+
         <Frame Grid.Row="2" Padding="12">
             <VerticalStackLayout Spacing="10">
                 <Label Style="{StaticResource LabelSubtitle}" Text="Quick access:" />
@@ -24,6 +71,7 @@
                     Command="{Binding GoToSetPayAllWeekCommand}"
                     IsEnabled="{Binding HasParkContracts, Mode=OneWay}"
                     Text="Set payment for all week" />
+                <Button IsEnabled="{Binding HasParkContracts, Mode=OneWay}" Text="Reports" />
             </VerticalStackLayout>
         </Frame>
     </Grid>

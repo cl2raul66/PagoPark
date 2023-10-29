@@ -26,7 +26,7 @@
                     </Grid>
                 </VerticalStackLayout>
             </Grid>
-            <Grid RowDefinitions="auto,auto" RowSpacing="12">
+            <Grid RowDefinitions="auto,auto" RowSpacing="8">
                 <Label
                     Style="{StaticResource LabelSubtitle}"
                     Grid.Row="0"

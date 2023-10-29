@@ -10,19 +10,30 @@ public partial class PgHomeViewModel : ObservableRecipient
 {
     readonly IAuthService authServ;
     readonly ILiteDbParkContractServices parkContractServ;
+    readonly ILiteDbDailyPaymentLogService dailyPaymentLogServ;
+    readonly IDateService dateServ;
 
-    public PgHomeViewModel(IAuthService authService, ILiteDbParkContractServices parkContractServices)
+    public PgHomeViewModel(IAuthService authService, ILiteDbParkContractServices parkContractServices, ILiteDbDailyPaymentLogService dailyPaymentLogService, IDateService dateService)
     {
         IsActive = true;
         authServ = authService;
         parkContractServ = parkContractServices;
+        dailyPaymentLogServ = dailyPaymentLogService;
+        dateServ = dateService;
 
         HasParkContracts = parkContractServ.Any();
+        GetAmountcharged();
         _ = GoToSingin();
     }
 
     [ObservableProperty]
     bool hasParkContracts;
+
+    [ObservableProperty]
+    string assists;
+
+    [ObservableProperty]
+    string amountCharged;
 
     [RelayCommand]
     async Task GoToSetPayAllWeek()
@@ -35,7 +46,7 @@ public partial class PgHomeViewModel : ObservableRecipient
     protected override void OnActivated()
     {
         base.OnActivated();
-        WeakReferenceMessenger.Default.Register<PgHomeViewModel, string, string>(this, nameof(HasParkContracts),(r, m) =>
+        WeakReferenceMessenger.Default.Register<PgHomeViewModel, string, string>(this, nameof(HasParkContracts), (r, m) =>
         {
             _ = bool.TryParse(m, out bool resul);
             r.HasParkContracts = resul;
@@ -48,6 +59,20 @@ public partial class PgHomeViewModel : ObservableRecipient
         {
             await Shell.Current.GoToAsync(nameof(PgSingIn), true);
         }
+    }
+
+    void GetAmountcharged()
+    {
+        var dFL = dateServ.FirstLastDayOfMonth();
+        var amountcollected = dailyPaymentLogServ.AmountCollected(dFL.Item1, dFL.Item2);
+        var ReservedDays = parkContractServ.GetAll().Select(x => (x.WeekFrequency, x.PayPerFrequency));
+        double totalPay = 0;
+        foreach (var (WeekFrequency, PayPerFrequency) in ReservedDays)
+        {
+            totalPay += PayPerFrequency * dateServ.TotalDays(WeekFrequency);
+        }
+
+        AmountCharged = $"{amountcollected:0.00} / {totalPay:0.00}";
     }
     #endregion
 }
