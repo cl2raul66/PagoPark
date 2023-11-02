@@ -22,8 +22,11 @@ public partial class PgHomeViewModel : ObservableRecipient
         dateServ = dateService;
 
         HasParkContracts = parkContractServ.Any();
-        GetAmountcharged();
+
         _ = GoToSingin();
+
+        GetAssists();
+        GetAmountcharged();
     }
 
     [ObservableProperty]
@@ -42,6 +45,18 @@ public partial class PgHomeViewModel : ObservableRecipient
         await Shell.Current.GoToAsync($"//{nameof(PgPay)}/{nameof(PgAddPayForAllWeek)}", true, senderObjects);
     }
 
+    [RelayCommand]
+    async Task GoToReports()
+    {
+        string[] options = { "By week", "By month", "All this year" };
+        var resul = await Shell.Current.DisplayActionSheet("Select a report:", "Cancel", null, options);
+        if (resul is null)
+        {
+            return;
+        }
+        await Shell.Current.GoToAsync(nameof(PgReports), true, new Dictionary<string, object>() { { "Title", resul } });
+    }
+
     #region Extra
     protected override void OnActivated()
     {
@@ -50,6 +65,24 @@ public partial class PgHomeViewModel : ObservableRecipient
         {
             _ = bool.TryParse(m, out bool resul);
             r.HasParkContracts = resul;
+        });
+
+        WeakReferenceMessenger.Default.Register<PgHomeViewModel, string, string>(this, nameof(GetAssists), (r, m) =>
+        {
+            _ = bool.TryParse(m, out bool resul);
+            if (resul)
+            {
+                GetAssists();
+            }
+        });
+
+        WeakReferenceMessenger.Default.Register<PgHomeViewModel, string, string>(this, nameof(GetAmountcharged), (r, m) =>
+        {
+            _ = bool.TryParse(m, out bool resul);
+            if (resul)
+            {
+                GetAmountcharged();
+            }
         });
     }
 
@@ -69,10 +102,25 @@ public partial class PgHomeViewModel : ObservableRecipient
         double totalPay = 0;
         foreach (var (WeekFrequency, PayPerFrequency) in ReservedDays)
         {
-            totalPay += PayPerFrequency * dateServ.TotalDays(WeekFrequency);
+            totalPay += PayPerFrequency * dateServ.TotalWeekfrequencyInMonth(WeekFrequency);
         }
 
         AmountCharged = $"{amountcollected:0.00} / {totalPay:0.00}";
+    }
+
+    void GetAssists()
+    {
+        var dFL = dateServ.FirstLastDayOfMonth();
+        var notpresented = dailyPaymentLogServ.GetByDates(dFL.Item1, dFL.Item2).Where(log => (log.Amount != null || log.Amount > 0)).Count();
+
+        var weekfrequencys = parkContractServ.GetAll().Select(x => x.WeekFrequency);
+        int totalPresented = 0;
+        foreach (var item in weekfrequencys)
+        {
+            totalPresented += dateServ.TotalWeekfrequencyInMonth(item);
+        }
+
+        Assists = $"{notpresented} / {totalPresented}";
     }
     #endregion
 }

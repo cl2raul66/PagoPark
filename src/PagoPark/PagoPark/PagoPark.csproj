@@ -33,7 +33,7 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />-->
-		<MauiIcon Include="Resources\AppIcon\logo.svg" Color="#D9D8D7"/>
+		<MauiIcon Include="Resources\AppIcon\logo.svg" Color="#D9D8D7" />
 
 		<!-- Splash Screen -->
 		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
@@ -107,6 +107,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PgSettings.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Reports\Reports.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

@@ -24,6 +24,7 @@ public partial class PgPayViewModel : ObservableRecipient
         dateServ = dateService;
 
         GetThisweek();
+        GetNotPresented();
     }
 
     [ObservableProperty]
@@ -38,11 +39,14 @@ public partial class PgPayViewModel : ObservableRecipient
     [ObservableProperty]
     DailyPaymentLogView selectedPaymentLog;
 
-    [ObservableProperty]
-    string unpaid;
+    //[ObservableProperty]
+    //string unpaid;
 
     [ObservableProperty]
     string notPresented;
+
+    [ObservableProperty]
+    bool enableSetNotpresented;
 
     [RelayCommand]
     async Task GoToSetPay()
@@ -58,6 +62,17 @@ public partial class PgPayViewModel : ObservableRecipient
         await Shell.Current.GoToAsync(nameof(PgAddPayForAllWeek), true, senderObjects);
     }
 
+    [RelayCommand]
+    void SetNotpresented()
+    {
+        DailyPaymentLog log = new(SelectedPaymentLog.PaymentDate, SelectedPaymentLog.ParkContractId, SelectedPaymentLog.RecordDate, SelectedPaymentLog.Amount, SelectedPaymentLog.Note) { Id = SelectedPaymentLog.Id, Note = "Not presented; " + SelectedPaymentLog.Note };
+        if (dailyPaymentLogServ.Upsert(log))
+        {
+            GetNotPresented();
+            WeakReferenceMessenger.Default.Send(bool.TrueString, "GetAssists");
+        }
+    }
+
     #region Extra
     protected override void OnActivated()
     {
@@ -71,8 +86,10 @@ public partial class PgPayViewModel : ObservableRecipient
             if (dailyPaymentLogServ.Upsert(log))
             {
                 GetPaymentlogs();
+                GetNotPresented();
+                WeakReferenceMessenger.Default.Send(bool.TrueString, "GetAmountcharged");
+                //GetUnpaid();
             }
-
         });
         WeakReferenceMessenger.Default.Register<PgPayViewModel, Tuple<string, double, string>, string>(this, nameof(PgAddPayForAllWeek), (r, m) =>
         {
@@ -127,7 +144,7 @@ public partial class PgPayViewModel : ObservableRecipient
                     ThisWeek.Add(date);
                     if (!hasPaymentLog)
                     {
-                        var getbyweeknumber = parkContractServ.GetByWeekNumber(dateServ.GetNumberOfWeek(date));
+                        var getbyweeknumber = parkContractServ.GetByWeekNumber(dateServ.GetDayOfWeek(date));
                         foreach (var item in getbyweeknumber)
                         {
                             dailyPaymentLogServ.Upsert(new(date, item.Id));
@@ -136,22 +153,42 @@ public partial class PgPayViewModel : ObservableRecipient
                 }
             }
             CurrentWeekDay = ThisWeek[(int)DateTime.Now.DayOfWeek];
-            GetUnpaid();
+            //GetUnpaid();
         }
     }
 
-    void GetUnpaid()
+    //void GetUnpaid()
+    //{
+    //    if (ThisWeek.First().Date == CurrentWeekDay.Date)
+    //    {
+    //        Unpaid = "The day is not over!";
+    //        return;
+    //    }
+    //    foreach (var item in dailyPaymentLogServ.GetParkContractIdByDates(ThisWeek.First(), CurrentWeekDay).ToHashSet())
+    //    {
+    //        Unpaid += parkContractServ.GetById(item).VehicleClient + ", ";
+    //    }
+    //    Unpaid = Unpaid.TrimEnd(new char[] { ',', ' ' });
+    //}
+
+    void GetNotPresented()
     {
-        if (ThisWeek.First().Date == CurrentWeekDay.Date)
+        var notpresented = dailyPaymentLogServ.GetByDates(dateServ.DatetimeStartOfWeek, CurrentWeekDay.Date).Where(log => (log.Amount == null || log.Amount == 0) && (log.Note != null && log.Note.Contains("Not presented")));
+        if (ThisWeek.First().Date == CurrentWeekDay.Date && CurrentWeekDay.Date.Hour <= 19)
         {
-            Unpaid = "The day is not over!";
+            NotPresented = "The day is not over!";
             return;
         }
-        foreach (var item in dailyPaymentLogServ.GetParkContractIdByDates(ThisWeek.First(), CurrentWeekDay).ToHashSet())
+        if (notpresented is null || !notpresented.Any())
         {
-            Unpaid += parkContractServ.GetById(item).VehicleClient + ", ";
+            NotPresented = "No absences yet!";
+            return;
         }
-        Unpaid = Unpaid.TrimEnd(new char[] { ',', ' ' });
+        foreach (var item in notpresented)
+        {
+            NotPresented += parkContractServ.GetById(item.ParkContractId).VehicleClient + ", ";
+        }
+        NotPresented = NotPresented.TrimEnd(new char[] { ',', ' ' });
     }
     #endregion
 }

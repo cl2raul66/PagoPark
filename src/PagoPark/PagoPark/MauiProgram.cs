@@ -34,6 +34,7 @@ namespace PagoPark
             builder.Services.AddTransient<PgManageUserViewModel>();
             builder.Services.AddTransient<PgManageContractsViewModel>();
             builder.Services.AddTransient<PgAddContractViewModel>();
+            builder.Services.AddTransient<PgReportsViewModel>();
 
             builder.Services.AddSingleton<PgHome>();
             builder.Services.AddSingleton<PgPay>();
@@ -43,6 +44,7 @@ namespace PagoPark
             builder.Services.AddTransient<PgManageUser>();
             builder.Services.AddTransient<PgManageContracts>();
             builder.Services.AddTransient<PgAddContract>();
+            builder.Services.AddTransient<PgReports>();
 
 #if DEBUG
             builder.Logging.AddDebug();

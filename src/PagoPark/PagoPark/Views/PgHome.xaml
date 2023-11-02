@@ -23,7 +23,7 @@
                 <Label
                     Style="{StaticResource LabelSubtitle}"
                     Grid.Row="0"
-                    Text="Summary:" />
+                    Text="Summary of this month:" />
                 <VerticalStackLayout
                     Grid.Row="1"
                     Padding="8,0"
@@ -40,7 +40,7 @@
                             <Label
                                 Style="{StaticResource LabelCaptionBody}"
                                 Grid.Column="1"
-                                Text="0 / 0"
+                                Text="{Binding Assists, Mode=OneWay, TargetNullValue='0 / 0'}"
                                 TextColor="{StaticResource Tertiary}" />
                         </Grid>
                     </Border>
@@ -71,7 +71,10 @@
                     Command="{Binding GoToSetPayAllWeekCommand}"
                     IsEnabled="{Binding HasParkContracts, Mode=OneWay}"
                     Text="Set payment for all week" />
-                <Button IsEnabled="{Binding HasParkContracts, Mode=OneWay}" Text="Reports" />
+                <Button
+                    Command="{Binding GoToReportsCommand}"
+                    IsEnabled="{Binding HasParkContracts, Mode=OneWay}"
+                    Text="Reports" />
             </VerticalStackLayout>
         </Frame>
     </Grid>

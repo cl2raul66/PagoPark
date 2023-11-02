@@ -12,6 +12,7 @@ public interface ILiteDbDailyPaymentLogService
     IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek);
     IEnumerable<DailyPaymentLog> GetThisWeek();
     IEnumerable<DailyPaymentLog> GetByDate(DateTime date);
+    IEnumerable<DailyPaymentLog> GetByDates(DateTime start, DateTime end);
     IEnumerable<DailyPaymentLog> GetByParkContractId(string parkcontractid);
     IEnumerable<string> GetParkContractIdByDates(DateTime start, DateTime end);
     double AmountCollected(DateTime start, DateTime end);
@@ -49,6 +50,8 @@ public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
     }
 
     public IEnumerable<DailyPaymentLog> GetByDate(DateTime date) => collection.FindAll().Where(x => DateTimeToCustomString(x.PaymentDate) == DateTimeToCustomString(date));
+
+    public IEnumerable<DailyPaymentLog> GetByDates(DateTime start, DateTime end) => collection.Find(x => x.PaymentDate >= start && x.PaymentDate <= end);
 
     public IEnumerable<DailyPaymentLog> GetByWeek(int year, int numberweek)
     {

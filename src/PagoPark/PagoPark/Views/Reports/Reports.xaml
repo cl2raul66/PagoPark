@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="PagoPark.Views.PgReports"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PagoPark.ViewModels"
+    Title="Reports"
+    x:DataType="vm:PgReportsViewModel"
+    BackgroundColor="#CC401A24"
+    Shell.PresentationMode="ModalAnimated">
+
+    <Frame
+        Margin="14"
+        Padding="12"
+        VerticalOptions="Center">
+        <Grid
+            RowDefinitions="*,auto"
+            RowSpacing="14"
+            VerticalOptions="End">
+            <VerticalStackLayout Spacing="16">
+                <Label
+                    Style="{StaticResource LabelTitle}"
+                    HorizontalOptions="Center"
+                    Text="{Binding Title, Mode=OneWay, StringFormat='Report - {0}'}"
+                    VerticalOptions="Center" />
+                <Grid ColumnDefinitions="*,auto" IsVisible="false">
+                    <Grid.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Title, Mode=OneWay}"
+                            TargetType="Grid"
+                            Value="By week">
+                            <Setter Property="IsVisible" Value="true" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <Label Style="{StaticResource LabelSubtitle}" VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding SelectedWeek, Mode=OneWay, StringFormat='Week: {0} / '}" />
+                                <Span Text="{Binding LastCurrentweek, Mode=OneWay}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Stepper
+                        Grid.Column="1"
+                        Increment="1"
+                        Maximum="{Binding LastCurrentweek, Mode=OneWay}"
+                        Minimum="1"
+                        Value="{Binding SelectedWeek, Mode=TwoWay}" />
+                </Grid>
+
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="1" Spacing="10">
+                <Button Text="Share" />
+                <Button Command="{Binding CloseCommand}" Text="Close" />
+            </VerticalStackLayout>
+        </Grid>
+    </Frame>
+
+</ContentPage>
