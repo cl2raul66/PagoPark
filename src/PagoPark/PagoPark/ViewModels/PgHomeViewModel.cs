@@ -50,7 +50,7 @@ public partial class PgHomeViewModel : ObservableRecipient
     {
         string[] options = { "By week", "By month", "All this year" };
         var resul = await Shell.Current.DisplayActionSheet("Select a report:", "Cancel", null, options);
-        if (resul is null)
+        if (resul is "Cancel")
         {
             return;
         }

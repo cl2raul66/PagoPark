@@ -153,23 +153,8 @@ public partial class PgPayViewModel : ObservableRecipient
                 }
             }
             CurrentWeekDay = ThisWeek[(int)DateTime.Now.DayOfWeek];
-            //GetUnpaid();
         }
     }
-
-    //void GetUnpaid()
-    //{
-    //    if (ThisWeek.First().Date == CurrentWeekDay.Date)
-    //    {
-    //        Unpaid = "The day is not over!";
-    //        return;
-    //    }
-    //    foreach (var item in dailyPaymentLogServ.GetParkContractIdByDates(ThisWeek.First(), CurrentWeekDay).ToHashSet())
-    //    {
-    //        Unpaid += parkContractServ.GetById(item).VehicleClient + ", ";
-    //    }
-    //    Unpaid = Unpaid.TrimEnd(new char[] { ',', ' ' });
-    //}
 
     void GetNotPresented()
     {

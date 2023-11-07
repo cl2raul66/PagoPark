@@ -42,55 +42,9 @@
                                 TextColor="{StaticResource Tertiary}" />
                         </Grid>
                     </Border>
-                    <!--<Border
-                        Padding="6"
-                        BackgroundColor="{StaticResource Secondary}"
-                        StrokeShape="RoundRectangle 4">
-                        <Grid RowDefinitions="auto,auto">
-                            <Label
-                                Style="{StaticResource LabelCaptionBody}"
-                                Text="Unpaid:"
-                                TextColor="{StaticResource White}" />
-                            <Label
-                                Style="{StaticResource LabelCaptionBody}"
-                                Grid.Row="1"
-                                LineBreakMode="WordWrap"
-                                Text="{Binding Unpaid, Mode=OneWay}"
-                                TextColor="{StaticResource Tertiary}" />
-                        </Grid>
-                    </Border>-->
                 </VerticalStackLayout>
             </Grid>
         </Frame>
-        <!--<Grid
-            Grid.Row="0"
-            RowDefinitions="auto, auto"
-            RowSpacing="8">
-            <Label
-                Style="{StaticResource LabelSubtitle}"
-                Grid.Row="0"
-                HorizontalOptions="Center"
-                Text="Summary:" />
-            <VerticalStackLayout Grid.Row="1" Spacing="8">
-                <Label Style="{StaticResource LabelCaptionBody}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Not presented:" />
-                            <Span Text="&#x0a;" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label Style="{StaticResource LabelCaptionBody}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Unpaid:" />
-                            <Span Text="&#x0a;" />
-                            <Span Text="{Binding Unpaid, Mode=OneWay}" TextColor="{StaticResource Tertiary}" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </VerticalStackLayout>
-        </Grid>-->
 
         <Frame Grid.Row="1">
             <Grid RowDefinitions="auto,*" RowSpacing="8">

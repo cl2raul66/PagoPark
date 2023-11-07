@@ -15,6 +15,7 @@
             <t:StringToAcronymConverter x:Key="StringToAcronym" />
             <t:FirstTwoCharsConverter x:Key="FirstTwoChars" />
             <t:DateToDayofweekConverter x:Key="DateToDayofweek" />
+            <t:NumberMonthToNameMonthConverter x:Key="NumberMonthToNameMonth" />
             <Style TargetType="Button">
                 <Setter Property="FontSize" Value="Subtitle" />
             </Style>

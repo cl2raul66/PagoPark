@@ -5,12 +5,14 @@ namespace PagoPark.Services;
 public interface IDateService
 {
     DateTime DatetimeStartOfWeek { get; }
-    string GetDayOfWeekName(DateTime d);
+
+    (DateTime, DateTime) FirstLastDayOfMonth(DateTime? d = null);
+    DateTime FirstSundayOfMonth();
     int GetDayOfWeek(DateTime d);
+    string GetDayOfWeekName(DateTime d);
+    (int, string) GetMonth(DateTime d);
     (DateTime, DateTime) GetWeekDates(int year, int weekNumber);
     int GetWeekNumber(DateTime date);
-    DateTime FirstSundayOfMonth();
-    (DateTime, DateTime) FirstLastDayOfMonth();
     int TotalWeekfrequencyInMonth(int[] weekfrequency);
 }
 
@@ -25,7 +27,7 @@ public class DateService : IDateService
         calendar = this.culture.Calendar;
     }
 
-    public DateTime DatetimeStartOfWeek => DateTime.Today.AddDays(-(int) DateTime.Today.DayOfWeek);
+    public DateTime DatetimeStartOfWeek => DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
 
     public int GetWeekNumber(DateTime date)
     {
@@ -41,6 +43,8 @@ public class DateService : IDateService
 
     public int GetDayOfWeek(DateTime d) => (int)d.DayOfWeek;
 
+    public (int, string) GetMonth(DateTime d) => (d.Month, d.ToString("MMMM").ToUpperInvariant());
+
     public (DateTime, DateTime) GetWeekDates(int year, int weekNumber)
     {
         DateTime startDate = FirstDayOfWeek(year, weekNumber);
@@ -55,9 +59,11 @@ public class DateService : IDateService
         return primerDiaDelMes.AddDays(((int)DayOfWeek.Sunday - (int)primerDiaDelMes.DayOfWeek + 7) % 7);
     }
 
-    public (DateTime, DateTime) FirstLastDayOfMonth()
+    public (DateTime, DateTime) FirstLastDayOfMonth(DateTime? d = null)
     {
-        DateTime primerDiaDelMes = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+        DateTime date = d is null ? DateTime.Now : d.Value;
+
+        DateTime primerDiaDelMes = new(date.Year, date.Month, 1);
         DateTime ultimoDiaDelMes = primerDiaDelMes.AddMonths(1).AddDays(-1);
         return (primerDiaDelMes, ultimoDiaDelMes);
     }

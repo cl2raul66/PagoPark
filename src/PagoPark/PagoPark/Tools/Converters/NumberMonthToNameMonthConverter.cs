@@ -2,13 +2,14 @@
 
 namespace PagoPark.Tools;
 
-public class DateToDayofweekConverter : IValueConverter
+public class NumberMonthToNameMonthConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is DateTime fecha && fecha.Year > DateTime.Now.Year - 1)
+        if (value is int month)
         {
-            return fecha.ToString("dddd", CultureInfo.CurrentCulture)[..2].ToUpper();
+            DateTime date = new(DateTime.Now.Year, month, 1);
+            return date.ToString("MMMM", CultureInfo.CurrentCulture).ToUpper();
         }
         return null;
     }

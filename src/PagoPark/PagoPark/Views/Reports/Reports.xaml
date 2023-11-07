@@ -3,6 +3,7 @@
     x:Class="PagoPark.Views.PgReports"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:PagoPark.Models"
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Reports"
     x:DataType="vm:PgReportsViewModel"
@@ -17,13 +18,17 @@
             RowDefinitions="*,auto"
             RowSpacing="14"
             VerticalOptions="End">
-            <VerticalStackLayout Spacing="16">
+            <VerticalStackLayout Spacing="14">
                 <Label
                     Style="{StaticResource LabelTitle}"
                     HorizontalOptions="Center"
                     Text="{Binding Title, Mode=OneWay, StringFormat='Report - {0}'}"
                     VerticalOptions="Center" />
-                <Grid ColumnDefinitions="*,auto" IsVisible="false">
+                <Grid
+                    ColumnDefinitions="*,auto"
+                    IsVisible="false"
+                    RowDefinitions="auto,auto"
+                    RowSpacing="14">
                     <Grid.Triggers>
                         <DataTrigger
                             Binding="{Binding Title, Mode=OneWay}"
@@ -35,7 +40,8 @@
                     <Label Style="{StaticResource LabelSubtitle}" VerticalOptions="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding SelectedWeek, Mode=OneWay, StringFormat='Week: {0} / '}" />
+                                <Span Text="{Binding SelectedWeek, Mode=OneWay}" />
+                                <Span Text=" / " />
                                 <Span Text="{Binding LastCurrentweek, Mode=OneWay}" />
                             </FormattedString>
                         </Label.FormattedText>
@@ -46,8 +52,165 @@
                         Maximum="{Binding LastCurrentweek, Mode=OneWay}"
                         Minimum="1"
                         Value="{Binding SelectedWeek, Mode=TwoWay}" />
+                    <VerticalStackLayout
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Spacing="4">
+                        <Label Style="{StaticResource LabelSubtitle}" HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding StartDate, Mode=OneWay}" />
+                                    <Span Text=" to " />
+                                    <Span Text="{Binding EndDate, Mode=OneWay}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <CollectionView ItemsSource="{Binding WeekReports, Mode=OneWay}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:WeekOrMontReport">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Vehicle}" />
+                                        <Label
+                                            Style="{StaticResource LabelCaption}"
+                                            FontAttributes="Bold"
+                                            HorizontalOptions="End">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Absence, Mode=OneWay, StringFormat='Absence: {0}'}" />
+                                                    <Span Text=" | " />
+                                                    <Span Text="{Binding TotalCollected, Mode=OneWay, StringFormat='Collected: {0:F2}'}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <BoxView
+                            BackgroundColor="{StaticResource Secondary}"
+                            CornerRadius="1"
+                            HeightRequest="1" />
+                        <Grid ColumnDefinitions="*,auto">
+                            <Label Style="{StaticResource LabelCaptionBody}" Text="Amount charged:" />
+                            <Label
+                                Style="{StaticResource LabelCaptionBody}"
+                                Grid.Column="1"
+                                Text="{Binding AmountCharged, Mode=OneWay, TargetNullValue='0.00', FallbackValue='0.00'}" />
+                        </Grid>
+                    </VerticalStackLayout>
                 </Grid>
-
+                <Grid
+                    ColumnDefinitions="*,auto"
+                    IsVisible="false"
+                    RowDefinitions="auto,auto"
+                    RowSpacing="14">
+                    <Grid.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Title, Mode=OneWay}"
+                            TargetType="Grid"
+                            Value="By month">
+                            <Setter Property="IsVisible" Value="true" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <Label
+                        Style="{StaticResource LabelSubtitle}"
+                        Text="{Binding SelectedMonth, Mode=OneWay, StringFormat='Month: {0}'}"
+                        VerticalOptions="Center" />
+                    <Stepper
+                        Grid.Column="1"
+                        Increment="1"
+                        Maximum="{Binding LastCurrentMonth, Mode=OneWay}"
+                        Minimum="1"
+                        Value="{Binding SelectedMonth, Mode=TwoWay}" />
+                    <VerticalStackLayout
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Spacing="4">
+                        <Label
+                            Style="{StaticResource LabelSubtitle}"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            Text="{Binding SelectedMonth, Mode=OneWay, Converter={StaticResource NumberMonthToNameMonth}}" />
+                        <CollectionView ItemsSource="{Binding MontReports, Mode=OneWay}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:WeekOrMontReport">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Vehicle}" />
+                                        <Label
+                                            Style="{StaticResource LabelCaption}"
+                                            FontAttributes="Bold"
+                                            HorizontalOptions="End">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Absence, Mode=OneWay, StringFormat='Absence: {0}'}" />
+                                                    <Span Text=" | " />
+                                                    <Span Text="{Binding TotalCollected, Mode=OneWay, StringFormat='Collected: {0:F2}'}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <BoxView
+                            BackgroundColor="{StaticResource Secondary}"
+                            CornerRadius="1"
+                            HeightRequest="1" />
+                        <Grid ColumnDefinitions="*,auto">
+                            <Label Style="{StaticResource LabelCaptionBody}" Text="Amount charged:" />
+                            <Label
+                                Style="{StaticResource LabelCaptionBody}"
+                                Grid.Column="1"
+                                Text="{Binding AmountCharged, Mode=OneWay, TargetNullValue='0.00', FallbackValue='0.00'}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+                <VerticalStackLayout IsVisible="false">
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger
+                            Binding="{Binding Title, Mode=OneWay}"
+                            TargetType="VerticalStackLayout"
+                            Value="All this year">
+                            <Setter Property="IsVisible" Value="true" />
+                        </DataTrigger>
+                    </VerticalStackLayout.Triggers>
+                    <Label
+                        Style="{StaticResource LabelSubtitle}"
+                        HorizontalOptions="Center"
+                        Text="Annual summary" />
+                    <CollectionView ItemsSource="{Binding AnnualReport, Mode=OneWay}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:WeekOrMontReport">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Vehicle, Mode=OneWay}" />
+                                    <Label
+                                        Style="{StaticResource LabelCaption}"
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="End">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Absence, Mode=OneWay, StringFormat='Absence: {0}'}" />
+                                                <Span Text=" | " />
+                                                <Span Text="{Binding TotalCollected, Mode=OneWay, StringFormat='Collected: {0:F2}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <BoxView
+                        BackgroundColor="{StaticResource Secondary}"
+                        CornerRadius="1"
+                        HeightRequest="1" />
+                    <Grid ColumnDefinitions="*,auto">
+                        <Label Style="{StaticResource LabelCaptionBody}" Text="Amount charged:" />
+                        <Label
+                            Style="{StaticResource LabelCaptionBody}"
+                            Grid.Column="1"
+                            Text="{Binding AmountCharged, Mode=OneWay, TargetNullValue='0.00', FallbackValue='0.00'}" />
+                    </Grid>
+                </VerticalStackLayout>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Row="1" Spacing="10">
                 <Button Text="Share" />

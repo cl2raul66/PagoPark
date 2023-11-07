@@ -15,11 +15,6 @@ public partial class DailyPaymentLogView : DailyPaymentLog
         parkContractServ = liteDbParkContractServices;
     }
 
-    //public DailyPaymentLogView(ILiteDbParkContractServices liteDbParkContractServices)
-    //{
-    //    parkContractServ = liteDbParkContractServices;
-    //}
-
     public override string ToString()
     {
         ParkContract contract = parkContractServ.GetById(ParkContractId);
