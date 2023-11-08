@@ -1,16 +1,10 @@
-﻿using Android.Util;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PagoPark.Models;
 using PagoPark.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PagoPark.ViewModels;
 
@@ -70,6 +64,21 @@ public partial class PgReportsViewModel : ObservableObject
 
     [RelayCommand]
     async Task Close() => await Shell.Current.GoToAsync("..", true);
+
+    [RelayCommand]
+    async Task Sharereport()
+    {
+        string fn = "Attachment.txt";
+        string file = Path.Combine(FileSystem.CacheDirectory, fn);
+
+        File.WriteAllText(file, "Hello World");
+
+        await Share.Default.RequestAsync(new ShareFileRequest
+        {
+            Title = $"Share - {Title}",
+            File = new ShareFile(file)
+        });
+    }
 
     #region Extra
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)

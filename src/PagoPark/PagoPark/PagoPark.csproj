@@ -55,10 +55,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 		<PackageReference Include="LiteDB" Version="5.0.17" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="QuestPDF" Version="2023.10.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -127,6 +128,8 @@
 
 	<ItemGroup>
 	  <Folder Include="Models\Dto\" />
+	  <Folder Include="Models\Reports\" />
+	  <Folder Include="Tools\Report\" />
 	</ItemGroup>
 
 </Project>
