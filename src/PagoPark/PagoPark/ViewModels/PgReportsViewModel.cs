@@ -2,6 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using PagoPark.Models;
 using PagoPark.Services;
+using PagoPark.Tools;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -15,12 +18,16 @@ public partial class PgReportsViewModel : ObservableObject
     readonly IDateService dateServ;
     readonly ILiteDbDailyPaymentLogService dailyPaymentLogServ;
     readonly ILiteDbParkContractServices parkContractServ;
+    readonly IAuthService authServ;
 
-    public PgReportsViewModel(IDateService dateService, ILiteDbDailyPaymentLogService dailyPaymentLogService, ILiteDbParkContractServices parkContractServices)
+    string Observations = string.Empty;
+
+    public PgReportsViewModel(IDateService dateService, ILiteDbDailyPaymentLogService dailyPaymentLogService, ILiteDbParkContractServices parkContractServices, IAuthService authService)
     {
         dateServ = dateService;
         dailyPaymentLogServ = dailyPaymentLogService;
         parkContractServ = parkContractServices;
+        authServ = authService;
     }
 
     [ObservableProperty]
@@ -68,14 +75,20 @@ public partial class PgReportsViewModel : ObservableObject
     [RelayCommand]
     async Task Sharereport()
     {
-        string fn = "Attachment.txt";
-        string file = Path.Combine(FileSystem.CacheDirectory, fn);
+        (string, ShareReport) fn = Title switch
+        {
+            "By week" => ("Weekly report.pdf", new() { Title = "Weekly report", Issued = authServ.currentUser.Username, DatetimeIssue = DateTime.Now.ToString(), ReportItems = WeekReports.ToArray(), Observations= Observations }),
+            "By month" => ("Monthly report.pdf", new()),
+            _ => ($"Annual report {DateTime.Now.Year}.pdf", new())
+        };
+        string file = Path.Combine(FileSystem.CacheDirectory, fn.Item1);
 
-        File.WriteAllText(file, "Hello World");
+        var document = new ReportDocument(fn.Item2) as IDocument;
+        document.GeneratePdf(file);
 
         await Share.Default.RequestAsync(new ShareFileRequest
         {
-            Title = $"Share - {Title}",
+            Title = $"Share - {Path.GetFileNameWithoutExtension(file)}",
             File = new ShareFile(file)
         });
     }
@@ -135,9 +148,20 @@ public partial class PgReportsViewModel : ObservableObject
                 int absence = dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && (x.Note != null && x.Note.Contains("Not presented"))).Count();
                 double collected = dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0;
                 WeekReports.Add(new(vehicle, absence, collected));
+
+                foreach (var item2 in dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && !string.IsNullOrEmpty(x.Note)))
+                {
+                    string note = item2.Note.Replace("Not presented;", string.Empty);
+                    if (string.IsNullOrEmpty(note))
+                    {
+                        break;
+                    }
+                    Observations += $"{item2.PaymentDate:dd/MM/yyyy} - {item}: {note}\n";
+                }                
             }
 
             AmountCharged = WeekReports.Select(x => x.TotalCollected).Sum();
+            //Observations = Observations.Replace("Not presented; ", string.Empty);
         }
 
         if (e.PropertyName == nameof(SelectedMonth))

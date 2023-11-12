@@ -3,6 +3,7 @@ using CommunityToolkit.Maui;
 using PagoPark.Services;
 using PagoPark.ViewModels;
 using PagoPark.Views;
+using QuestPDF.Infrastructure;
 
 namespace PagoPark
 {
@@ -46,6 +47,7 @@ namespace PagoPark
             builder.Services.AddTransient<PgAddContract>();
             builder.Services.AddTransient<PgReports>();
 
+            QuestPDF.Settings.License = LicenseType.Community;
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

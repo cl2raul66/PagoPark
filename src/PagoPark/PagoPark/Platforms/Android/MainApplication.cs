@@ -1,9 +1,11 @@
 ﻿using Android.App;
 using Android.Runtime;
+ [assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage, MaxSdkVersion = 32)]
 
 namespace PagoPark
 {
     [Application]
+   
     public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)

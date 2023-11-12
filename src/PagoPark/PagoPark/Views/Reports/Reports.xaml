@@ -213,7 +213,7 @@
                 </VerticalStackLayout>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Row="1" Spacing="10">
-                <Button Text="Share" />
+                <Button Text="Share" Command="{Binding SharereportCommand}"/>
                 <Button Command="{Binding CloseCommand}" Text="Close" />
             </VerticalStackLayout>
         </Grid>
