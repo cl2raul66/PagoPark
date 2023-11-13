@@ -28,6 +28,14 @@ public partial class PgReportsViewModel : ObservableObject
         dailyPaymentLogServ = dailyPaymentLogService;
         parkContractServ = parkContractServices;
         authServ = authService;
+
+        Task.Run(() =>
+        {
+            foreach (var f in Directory.GetFiles(FileSystem.CacheDirectory, "*.pdf"))
+            {
+                File.Delete(f);
+            }
+        });
     }
 
     [ObservableProperty]
@@ -75,26 +83,26 @@ public partial class PgReportsViewModel : ObservableObject
     [RelayCommand]
     async Task Sharereport()
     {
-        (string, ShareReport) fn = Title switch
+        (string t, ReportDocument d) reportObjet = Title switch
         {
-            "By week" => ("Weekly report.pdf", new() { Title = "Weekly report", Issued = authServ.currentUser.Username, DatetimeIssue = DateTime.Now.ToString(), ReportItems = WeekReports.ToArray(), Observations= Observations }),
-            "By month" => ("Monthly report.pdf", new()),
-            _ => ($"Annual report {DateTime.Now.Year}.pdf", new())
+            "By week" => ($"Weekly report {StartDate} to {EndDate}", new ReportDocument("Weekly report", authServ.currentUser.Username, DateTime.Now.ToString("F"), WeekReports.ToArray(), Observations, dateServ.GetWeekDates(DateTime.Now.Year, SelectedWeek).ToTuple())),
+            "By month" => ($"Monthly report {dateServ.GetMonthNameByNumber(SelectedMonth)}", new ReportDocument("Monthly report", authServ.currentUser.Username, DateTime.Now.ToString("F"), MontReports.ToArray(), Observations, new DateTime(DateTime.Now.Year, SelectedMonth, 1))),
+            _ => ($"Annual report {DateTime.Now.Year}", new ReportDocument("Annual report", authServ.currentUser.Username, DateTime.Now.ToString("F"), AnnualReport.ToArray(), Observations, DateTime.Now.Year))
         };
-        string file = Path.Combine(FileSystem.CacheDirectory, fn.Item1);
+        string file = Path.Combine(FileSystem.CacheDirectory, reportObjet.t + ".pdf");
 
-        var document = new ReportDocument(fn.Item2) as IDocument;
+        var document = reportObjet.d as IDocument;
         document.GeneratePdf(file);
 
         await Share.Default.RequestAsync(new ShareFileRequest
         {
-            Title = $"Share - {Path.GetFileNameWithoutExtension(file)}",
+            Title = $"Share - {reportObjet.t}",
             File = new ShareFile(file)
         });
     }
 
     #region Extra
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    protected override async void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
         if (e.PropertyName == nameof(Title))
@@ -119,10 +127,20 @@ public partial class PgReportsViewModel : ObservableObject
                         var dailyPaymentLogs = dailyPaymentLogServ.GetByDates(sDate, eDate);
                         int absence = 0;
                         double collected = 0;
+                        Dictionary<string, string> observationDetail = new();
                         foreach (var item in parkContractServ.GetAll())
                         {
                             absence += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && (x.Note != null && x.Note.Contains("Not presented"))).Count();
                             collected += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0;
+                            foreach (var item2 in dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && !string.IsNullOrEmpty(x.Note)))
+                            {
+                                if (observationDetail.Any())
+                                {
+                                    observationDetail[item.VehicleClient.ToString()] += $"{item2.PaymentDate:dd/MM/yyyy}: {item2.Note}\n";
+                                    break;
+                                }
+                                observationDetail.Add(item.VehicleClient.ToString(), $"{item2.PaymentDate:dd/MM/yyyy}: {item2.Note}\n");
+                            }
                         }
                         string monthName = new DateTime(DateTime.Now.Year, i, 1).ToString("MMMM", CultureInfo.CurrentCulture).ToUpper();
                         AnnualReport.Add(new(monthName, absence, collected));
@@ -137,31 +155,24 @@ public partial class PgReportsViewModel : ObservableObject
         if (e.PropertyName == nameof(SelectedWeek))
         {
             var (sDate, eDate) = dateServ.GetWeekDates(DateTime.Now.Year, SelectedWeek);
-            StartDate = sDate.ToString("dd/MM/yyyy");
-            EndDate = eDate.ToString("dd/MM/yyyy");
+            StartDate = sDate.ToString("dd-MM-yyyy");
+            EndDate = eDate.ToString("dd-MM-yyyy");
 
             var dailyPaymentLogs = dailyPaymentLogServ.GetByDates(sDate, eDate);
             WeekReports = new();
             foreach (var item in parkContractServ.GetAll())
             {
-                string vehicle = item.ToString();
-                int absence = dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && (x.Note != null && x.Note.Contains("Not presented"))).Count();
-                double collected = dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0;
-                WeekReports.Add(new(vehicle, absence, collected));
+                int absence = await Task.Run(() => dailyPaymentLogs.Count(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && x.Note != null && x.Note.Contains("Not presented")));
+                double collected = await Task.Run(() => dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0);
+                WeekReports.Add(new(item.ToString(), absence, collected));
 
                 foreach (var item2 in dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && !string.IsNullOrEmpty(x.Note)))
                 {
-                    string note = item2.Note.Replace("Not presented;", string.Empty);
-                    if (string.IsNullOrEmpty(note))
-                    {
-                        break;
-                    }
-                    Observations += $"{item2.PaymentDate:dd/MM/yyyy} - {item}: {note}\n";
-                }                
+                    Observations += $"{item2.PaymentDate:dd/MM/yyyy} - {item.VehicleClient}: {item2.Note}\n";
+                }
             }
 
-            AmountCharged = WeekReports.Select(x => x.TotalCollected).Sum();
-            //Observations = Observations.Replace("Not presented; ", string.Empty);
+            AmountCharged = WeekReports.Sum(x => x.TotalCollected);
         }
 
         if (e.PropertyName == nameof(SelectedMonth))
@@ -172,10 +183,14 @@ public partial class PgReportsViewModel : ObservableObject
 
             foreach (var item in parkContractServ.GetAll())
             {
-                string vehicle = item.ToString();
-                int absence = dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && (x.Note != null && x.Note.Contains("Not presented"))).Count();
-                double collected = dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0;
-                MontReports.Add(new(vehicle, absence, collected));
+                int absence = await Task.Run(() => dailyPaymentLogs.Count(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && (x.Note != null && x.Note.Contains("Not presented"))));
+                double collected = await Task.Run(() => dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0);
+                MontReports.Add(new(item.ToString(), absence, collected));
+
+                foreach (var item2 in dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && !string.IsNullOrEmpty(x.Note)))
+                {
+                    Observations += $"{item2.PaymentDate:dd/MM/yyyy} - {item.VehicleClient}: {item2.Note}\n";
+                }
             }
 
             AmountCharged = MontReports.Select(x => x.TotalCollected).Sum();

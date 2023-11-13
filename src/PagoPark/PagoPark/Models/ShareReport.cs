@@ -14,14 +14,30 @@ public class WeekSharereport : ShareReport
 {
     public Tuple<DateTime, DateTime> Week { get; set; }
 
-    public WeekSharereport(ShareReport shareReport, Tuple<DateTime, DateTime> week)
+    public WeekSharereport(string title, string issued, string datetimeissue, WeekOrMontReport[] reportitems, string observation, Tuple<DateTime, DateTime> week)
         : base()
     {
-        Title = shareReport.Title;
-        Issued = shareReport.Issued;
-        DatetimeIssue = shareReport.DatetimeIssue;
-        ReportItems = shareReport.ReportItems;
-        Observations = shareReport.Observations;
+        Title = title;
+        Issued = issued;
+        DatetimeIssue = datetimeissue;
+        ReportItems = reportitems;
+        Observations = observation;
         Week = week;
+    }
+}
+
+public class MonthSharereport : ShareReport
+{
+    public int Month { get; set; }
+
+    public MonthSharereport(string title, string issued, string datetimeissue, WeekOrMontReport[] reportitems, string observation, int month)
+        : base()
+    {
+        Title = title;
+        Issued = issued;
+        DatetimeIssue = datetimeissue;
+        ReportItems = reportitems;
+        Observations = observation;
+        Month = month;
     }
 }

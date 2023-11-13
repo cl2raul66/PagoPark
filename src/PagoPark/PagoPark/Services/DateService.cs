@@ -11,6 +11,7 @@ public interface IDateService
     int GetDayOfWeek(DateTime d);
     string GetDayOfWeekName(DateTime d);
     (int, string) GetMonth(DateTime d);
+    string GetMonthNameByNumber(int m);
     (DateTime, DateTime) GetWeekDates(int year, int weekNumber);
     int GetWeekNumber(DateTime date);
     int TotalWeekfrequencyInMonth(int[] weekfrequency);
@@ -44,6 +45,7 @@ public class DateService : IDateService
     public int GetDayOfWeek(DateTime d) => (int)d.DayOfWeek;
 
     public (int, string) GetMonth(DateTime d) => (d.Month, d.ToString("MMMM").ToUpperInvariant());
+    public string GetMonthNameByNumber(int m) => new DateTime(DateTime.Now.Year, m, 1).ToString("MMMM").ToUpperInvariant();
 
     public (DateTime, DateTime) GetWeekDates(int year, int weekNumber)
     {
