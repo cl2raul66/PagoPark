@@ -6,13 +6,13 @@ using Colors = QuestPDF.Helpers.Colors;
 using IContainer = QuestPDF.Infrastructure.IContainer;
 
 namespace PagoPark.Tools;
-
+#nullable enable
 public class ReportDocument : IDocument
 {
     readonly string Title;
     readonly string Issued;
     readonly string DatetimeIssue;
-    readonly WeekOrMontReport[] ReportItems;
+    readonly Report[] ReportItems;
     readonly string Observations;
 
     Tuple<DateTime, DateTime>? Week;
@@ -23,7 +23,7 @@ public class ReportDocument : IDocument
     public DocumentSettings GetSettings() => DocumentSettings.Default;
 
     // for week
-    public ReportDocument(string title, string issued, string datetimeissue, WeekOrMontReport[] reportitems, string observations, Tuple<DateTime, DateTime> week)
+    public ReportDocument(string title, string issued, string datetimeissue, Report[] reportitems, string observations, Tuple<DateTime, DateTime> week)
     {
         Title = title;
         Issued = issued;
@@ -34,7 +34,7 @@ public class ReportDocument : IDocument
     }
 
     // for month
-    public ReportDocument(string title, string issued, string datetimeissue, WeekOrMontReport[] reportitems, string observations, DateTime date)
+    public ReportDocument(string title, string issued, string datetimeissue, Report[] reportitems, string observations, DateTime date)
     {
         Title = title;
         Issued = issued;
@@ -45,7 +45,7 @@ public class ReportDocument : IDocument
     }
 
     // for year
-    public ReportDocument(string title, string issued, string datetimeissue, WeekOrMontReport[] reportitems, string observations, int year)
+    public ReportDocument(string title, string issued, string datetimeissue, Report[] reportitems, string observations, int year)
     {
         Title = title;
         Issued = issued;
@@ -171,7 +171,7 @@ public class ReportDocument : IDocument
 
             foreach (var item in ReportItems)
             {
-                table.Cell().Element(CellStyle).Text(item.Vehicle).FontSize(12);
+                table.Cell().Element(CellStyle).Text(item.Name).FontSize(12);
                 table.Cell().Element(CellStyle).AlignRight().Text(item.Absence.ToString()).FontSize(12);
                 table.Cell().Element(CellStyle).AlignRight().Text(item.TotalCollected.ToString("0.00")).FontSize(12);
                 static IContainer CellStyle(IContainer container)
@@ -199,3 +199,4 @@ public class ReportDocument : IDocument
         });
     }
 }
+#nullable disable

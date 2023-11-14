@@ -14,7 +14,7 @@ namespace PagoPark.ViewModels;
 [QueryProperty(nameof(Title), nameof(Title))]
 public partial class PgReportsViewModel : ObservableObject
 {
-    readonly string[] options = { "By week", "By month", "All this year" };
+    //readonly string[] options = { "By week", "By month", "All this year" };
     readonly IDateService dateServ;
     readonly ILiteDbDailyPaymentLogService dailyPaymentLogServ;
     readonly ILiteDbParkContractServices parkContractServ;
@@ -55,7 +55,7 @@ public partial class PgReportsViewModel : ObservableObject
     string endDate;
 
     [ObservableProperty]
-    ObservableCollection<WeekOrMontReport> weekReports;
+    ObservableCollection<Report> weekReports;
     #endregion
 
     [ObservableProperty]
@@ -69,12 +69,12 @@ public partial class PgReportsViewModel : ObservableObject
     int lastCurrentMonth = 2;
 
     [ObservableProperty]
-    ObservableCollection<WeekOrMontReport> montReports;
+    ObservableCollection<Report> montReports;
     #endregion
 
     #region Year
     [ObservableProperty]
-    ObservableCollection<WeekOrMontReport> annualReport;
+    ObservableCollection<Report> annualReport;
     #endregion
 
     [RelayCommand]
@@ -83,20 +83,20 @@ public partial class PgReportsViewModel : ObservableObject
     [RelayCommand]
     async Task Sharereport()
     {
-        (string t, ReportDocument d) reportObjet = Title switch
+        (string t, ReportDocument d) = Title switch
         {
             "By week" => ($"Weekly report {StartDate} to {EndDate}", new ReportDocument("Weekly report", authServ.currentUser.Username, DateTime.Now.ToString("F"), WeekReports.ToArray(), Observations, dateServ.GetWeekDates(DateTime.Now.Year, SelectedWeek).ToTuple())),
             "By month" => ($"Monthly report {dateServ.GetMonthNameByNumber(SelectedMonth)}", new ReportDocument("Monthly report", authServ.currentUser.Username, DateTime.Now.ToString("F"), MontReports.ToArray(), Observations, new DateTime(DateTime.Now.Year, SelectedMonth, 1))),
             _ => ($"Annual report {DateTime.Now.Year}", new ReportDocument("Annual report", authServ.currentUser.Username, DateTime.Now.ToString("F"), AnnualReport.ToArray(), Observations, DateTime.Now.Year))
         };
-        string file = Path.Combine(FileSystem.CacheDirectory, reportObjet.t + ".pdf");
+        string file = Path.Combine(FileSystem.CacheDirectory, t + ".pdf");
 
-        var document = reportObjet.d as IDocument;
+        var document = d as IDocument;
         document.GeneratePdf(file);
 
         await Share.Default.RequestAsync(new ShareFileRequest
         {
-            Title = $"Share - {reportObjet.t}",
+            Title = $"Share - {t}",
             File = new ShareFile(file)
         });
     }
@@ -130,7 +130,7 @@ public partial class PgReportsViewModel : ObservableObject
                         Dictionary<string, string> observationDetail = new();
                         foreach (var item in parkContractServ.GetAll())
                         {
-                            absence += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && (x.Note != null && x.Note.Contains("Not presented"))).Count();
+                            absence += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && x.Note != null && x.Note.Contains("Not presented")).Count();
                             collected += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0;
                             foreach (var item2 in dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && !string.IsNullOrEmpty(x.Note)))
                             {

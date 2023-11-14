@@ -67,9 +67,9 @@
                         </Label>
                         <CollectionView ItemsSource="{Binding WeekReports, Mode=OneWay}" SelectionMode="None">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="model:WeekOrMontReport">
+                                <DataTemplate x:DataType="model:Report">
                                     <VerticalStackLayout Spacing="4">
-                                        <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Vehicle}" />
+                                        <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Name}" />
                                         <Label
                                             Style="{StaticResource LabelCaption}"
                                             FontAttributes="Bold"
@@ -133,9 +133,9 @@
                             Text="{Binding SelectedMonth, Mode=OneWay, Converter={StaticResource NumberMonthToNameMonth}}" />
                         <CollectionView ItemsSource="{Binding MontReports, Mode=OneWay}" SelectionMode="None">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="model:WeekOrMontReport">
+                                <DataTemplate x:DataType="model:Report">
                                     <VerticalStackLayout Spacing="4">
-                                        <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Vehicle}" />
+                                        <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Name}" />
                                         <Label
                                             Style="{StaticResource LabelCaption}"
                                             FontAttributes="Bold"
@@ -180,9 +180,9 @@
                         Text="Annual summary" />
                     <CollectionView ItemsSource="{Binding AnnualReport, Mode=OneWay}" SelectionMode="None">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="model:WeekOrMontReport">
+                            <DataTemplate x:DataType="model:Report">
                                 <VerticalStackLayout Spacing="4">
-                                    <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Vehicle, Mode=OneWay}" />
+                                    <Label Style="{StaticResource LabelSubtitle}" Text="{Binding Name, Mode=OneWay}" />
                                     <Label
                                         Style="{StaticResource LabelCaption}"
                                         FontAttributes="Bold"
