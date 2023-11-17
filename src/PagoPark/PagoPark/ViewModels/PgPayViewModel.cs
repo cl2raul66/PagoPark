@@ -158,22 +158,25 @@ public partial class PgPayViewModel : ObservableRecipient
 
     void GetNotPresented()
     {
-        var notpresented = dailyPaymentLogServ.GetByDates(dateServ.DatetimeStartOfWeek, CurrentWeekDay.Date).Where(log => (log.Amount == null || log.Amount == 0) && (log.Note != null && log.Note.Contains("Not presented")));
-        if (ThisWeek.First().Date == CurrentWeekDay.Date && CurrentWeekDay.Date.Hour <= 19)
+        if (parkContractServ.Any())
         {
-            NotPresented = "The day is not over!";
-            return;
+            var notpresented = dailyPaymentLogServ.GetByDates(dateServ.DatetimeStartOfWeek, CurrentWeekDay.Date).Where(log => (log.Amount == null || log.Amount == 0) && (log.Note != null && log.Note.Contains("Not presented")));
+            if (ThisWeek.First().Date == CurrentWeekDay.Date && CurrentWeekDay.Date.Hour <= 19)
+            {
+                NotPresented = "The day is not over!";
+                return;
+            }
+            if (notpresented is null || !notpresented.Any())
+            {
+                NotPresented = "No absences yet!";
+                return;
+            }
+            foreach (var item in notpresented)
+            {
+                NotPresented += parkContractServ.GetById(item.ParkContractId).VehicleClient + ", ";
+            }
+            NotPresented = NotPresented.TrimEnd(new char[] { ',', ' ' });
         }
-        if (notpresented is null || !notpresented.Any())
-        {
-            NotPresented = "No absences yet!";
-            return;
-        }
-        foreach (var item in notpresented)
-        {
-            NotPresented += parkContractServ.GetById(item.ParkContractId).VehicleClient + ", ";
-        }
-        NotPresented = NotPresented.TrimEnd(new char[] { ',', ' ' });
     }
     #endregion
 }

@@ -39,6 +39,46 @@
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041.0|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|AnyCPU'">
+	  <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+	  <ApplicationVersion>2</ApplicationVersion>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />-->

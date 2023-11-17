@@ -127,19 +127,20 @@ public partial class PgReportsViewModel : ObservableObject
                         var dailyPaymentLogs = dailyPaymentLogServ.GetByDates(sDate, eDate);
                         int absence = 0;
                         double collected = 0;
-                        Dictionary<string, string> observationDetail = new();
+                        //Dictionary<string, string> observationDetail = new();
                         foreach (var item in parkContractServ.GetAll())
                         {
                             absence += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && (x.Amount == null || x.Amount == 0) && x.Note != null && x.Note.Contains("Not presented")).Count();
                             collected += dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && x.Amount != null && x.Amount > 0).Select(x => x.Amount)?.Sum() ?? 0;
                             foreach (var item2 in dailyPaymentLogs.Where(x => x.ParkContractId == item.Id && !string.IsNullOrEmpty(x.Note)))
                             {
-                                if (observationDetail.Any())
-                                {
-                                    observationDetail[item.VehicleClient.ToString()] += $"{item2.PaymentDate:dd/MM/yyyy}: {item2.Note}\n";
-                                    break;
-                                }
-                                observationDetail.Add(item.VehicleClient.ToString(), $"{item2.PaymentDate:dd/MM/yyyy}: {item2.Note}\n");
+                                //if (observationDetail.Any())
+                                //{
+                                //    observationDetail[item.VehicleClient.ToString()] += $"{item2.PaymentDate:dd/MM/yyyy}: {item2.Note}\n";
+                                //    break;
+                                //}
+                                //observationDetail.Add(item.VehicleClient.ToString(), $"{item2.PaymentDate:dd/MM/yyyy}: {item2.Note}\n");
+                                Observations += $"{item2.PaymentDate:dd/MM/yyyy},  {item.VehicleClient} :{item2.Note}\n";
                             }
                         }
                         string monthName = new DateTime(DateTime.Now.Year, i, 1).ToString("MMMM", CultureInfo.CurrentCulture).ToUpper();
