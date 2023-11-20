@@ -6,6 +6,7 @@
     xmlns:vm="clr-namespace:PagoPark.ViewModels"
     Title="Sing - In"
     x:DataType="vm:PgSingInViewModel"
+    Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     Shell.PresentationMode="Animated"
     Shell.TabBarIsVisible="False">
@@ -13,26 +14,36 @@
         <BackButtonBehavior IsVisible="False" />
     </Shell.BackButtonBehavior>
 
-    <Grid Padding="14,10" RowDefinitions="auto,*">
+    <Grid Style="{StaticResource GridContentpage}" RowDefinitions="auto,*,auto">
         <Label
+            Style="{StaticResource LabelTitle}"
             Grid.Row="0"
-            FontSize="Title"
             HorizontalOptions="Center"
-            Text="Welcome to PagoPark!"
-            TextColor="{StaticResource Secondary}" />
-        <VerticalStackLayout
+            Text="Welcome to PagoPark!" />
+        <Image
             Grid.Row="1"
+            MaximumHeightRequest="300"
+            MaximumWidthRequest="300"
+            Source="logo_start.png" />
+        <VerticalStackLayout
+            Grid.Row="2"
             Spacing="8"
             VerticalOptions="Center">
-            <Grid RowDefinitions="auto, auto">
-                <Label Grid.Row="0" Text="Username: *" />
+            <Grid RowDefinitions="auto, auto" RowSpacing="{OnIdiom Default=4, Phone=0}">
+                <Label
+                    Style="{StaticResource LabelSubtitle}"
+                    Grid.Row="0"
+                    Text="E-Mail: *" />
                 <Entry
                     Grid.Row="1"
-                    Placeholder="Write user name here!"
+                    Placeholder="Write e-mail here!"
                     Text="{Binding Username}" />
             </Grid>
-            <Grid RowDefinitions="auto, auto">
-                <Label Grid.Row="0" Text="Password: *" />
+            <Grid RowDefinitions="auto, auto" RowSpacing="{OnIdiom Default=4, Phone=0}">
+                <Label
+                    Style="{StaticResource LabelSubtitle}"
+                    Grid.Row="0"
+                    Text="Password: *" />
                 <Entry
                     Grid.Row="1"
                     IsPassword="True"
@@ -44,9 +55,10 @@
             <Label
                 Padding="8"
                 FontAttributes="Bold"
-                FontSize="Micro"
+                FontSize="{OnIdiom Default=Caption, Phone=Micro}"
                 HorizontalTextAlignment="Center"
-                Text="by RandA Media Lab, Group" />
+                Text="by RandA Media Lab, Group"
+                TextColor="{StaticResource Secondary}" />
         </VerticalStackLayout>
     </Grid>
 

@@ -6,6 +6,7 @@ namespace PagoPark.Services;
 public interface ILiteDbDailyPaymentLogService
 {
     bool Any();
+    bool ExistParkContract(string parkcontractid);
     bool Delete(string id);
     bool Exist(string id);
     IEnumerable<DailyPaymentLog> GetAll();
@@ -38,6 +39,10 @@ public class LiteDbDailyPaymentLogService : ILiteDbDailyPaymentLogService
     }
 
     public bool Any() => collection.Count() > 0;
+
+    public bool ExistParkContract(string parkcontractid) => Any()
+        ? collection.FindOne(x => x.ParkContractId == parkcontractid) is not null
+        : false;
 
     public IEnumerable<DailyPaymentLog> GetAll() => collection.FindAll();
 

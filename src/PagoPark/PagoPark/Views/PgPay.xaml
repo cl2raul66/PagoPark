@@ -12,7 +12,12 @@
     Shell.NavBarIsVisible="False">
 
     <Grid
-        Padding="14,10"
+        Padding="{OnIdiom Default=10,
+                          Phone='14,10'}"
+        HorizontalOptions="{OnIdiom Default=Center,
+                                    Phone=Fill}"
+        MaximumWidthRequest="{OnIdiom Default=400,
+                                      Phone=2000}"
         RowDefinitions="auto,*,auto"
         RowSpacing="14">
         <Frame Grid.Row="0" VerticalOptions="Start">
@@ -50,7 +55,7 @@
             <Grid RowDefinitions="auto,*" RowSpacing="8">
                 <Frame
                     Grid.Row="0"
-                    Padding="1"
+                    Padding="0"
                     BackgroundColor="{StaticResource White}"
                     HorizontalOptions="Center"
                     VerticalOptions="Start">
@@ -67,15 +72,18 @@
                                     <DataTemplate>
                                         <Border
                                             Style="{StaticResource BorderItem}"
-                                            Padding="12,10"
-                                            HorizontalOptions="Center"
+                                            Padding="{OnIdiom Phone='12,10',
+                                                              Default='8,0'}"
                                             StrokeShape="RoundRectangle 4,0,4,0">
                                             <Label
                                                 x:Name="LabelTitle"
                                                 FontAttributes="Bold"
-                                                FontSize="Subtitle"
+                                                FontSize="{OnIdiom Default=Caption,
+                                                                   Phone=Subtitle}"
+                                                HorizontalOptions="Center"
                                                 Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
-                                                TextColor="{StaticResource White}" />
+                                                TextColor="{StaticResource White}"
+                                                VerticalOptions="Center" />
                                         </Border>
                                     </DataTemplate>
                                 </tool:DayOfWeek2TemplateSelector.StartItemTemplate>
@@ -83,30 +91,33 @@
                                     <DataTemplate>
                                         <Border
                                             Style="{StaticResource BorderItem}"
-                                            Padding="12,10"
-                                            HorizontalOptions="Center"
+                                            Padding="{OnIdiom Phone='12,10',
+                                                              Default='8,0'}"
                                             StrokeShape="RoundRectangle 0,4,0,4">
                                             <Label
                                                 x:Name="LabelTitle"
                                                 FontAttributes="Bold"
-                                                FontSize="Subtitle"
+                                                FontSize="{OnIdiom Default=Caption,
+                                                                   Phone=Subtitle}"
+                                                HorizontalOptions="Center"
                                                 Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
-                                                TextColor="{StaticResource White}" />
+                                                TextColor="{StaticResource White}"
+                                                VerticalOptions="Center" />
                                         </Border>
                                     </DataTemplate>
                                 </tool:DayOfWeek2TemplateSelector.EndItemTemplate>
                                 <tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
                                     <DataTemplate>
-                                        <Border
-                                            Style="{StaticResource BorderItem}"
-                                            Padding="12,10"
-                                            HorizontalOptions="Center">
+                                        <Border Style="{StaticResource BorderItem}" Padding="{OnIdiom Phone='12,10', Default='8,0'}">
                                             <Label
                                                 x:Name="LabelTitle"
                                                 FontAttributes="Bold"
-                                                FontSize="Subtitle"
+                                                FontSize="{OnIdiom Default=Caption,
+                                                                   Phone=Subtitle}"
+                                                HorizontalOptions="Center"
                                                 Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
-                                                TextColor="{StaticResource White}" />
+                                                TextColor="{StaticResource White}"
+                                                VerticalOptions="Center" />
                                         </Border>
                                     </DataTemplate>
                                 </tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>

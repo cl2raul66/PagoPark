@@ -5,27 +5,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PagoPark"
     xmlns:v="clr-namespace:PagoPark.Views"
-    Shell.FlyoutBehavior="{OnIdiom Default=Flyout,
-                                   Phone=Disabled}"
-    Shell.TabBarIsVisible="{OnIdiom Default=False,
-                                    Phone=True}">
+    Shell.FlyoutBehavior="{OnIdiom Default=Flyout, Phone=Disabled}"
+    Shell.TabBarIsVisible="{OnIdiom Default=False, Phone=True}">
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <Tab Title="Home">
             <Tab.Icon>
-                <FontImageSource FontFamily="icofont" Glyph="{StaticResource Home}" />
+                <FontImageSource
+                    FontFamily="icofont"
+                    Glyph="{StaticResource Home}"
+                    Color="{OnIdiom Desktop={StaticResource Secondary}, Tablet={StaticResource Secondary}}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate v:PgHome}" Route="PgHome" />
         </Tab>
         <Tab Title="Pay">
             <Tab.Icon>
-                <FontImageSource FontFamily="icofont" Glyph="{StaticResource Pay}" />
+                <FontImageSource
+                    FontFamily="icofont"
+                    Glyph="{StaticResource Pay}"
+                    Color="{OnIdiom Desktop={StaticResource Secondary}, Tablet={StaticResource Secondary}}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate v:PgPay}" Route="PgPay" />
         </Tab>
         <Tab Title="Settings">
             <Tab.Icon>
-                <FontImageSource FontFamily="icofont" Glyph="{StaticResource UiSettings}" />
+                <FontImageSource
+                    FontFamily="icofont"
+                    Glyph="{StaticResource UiSettings}"
+                    Color="{OnIdiom Desktop={StaticResource Secondary}, Tablet={StaticResource Secondary}}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate v:PgSettings}" Route="PgSettings" />
         </Tab>

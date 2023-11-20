@@ -46,6 +46,7 @@ namespace PagoPark
             builder.Services.AddTransient<PgManageContracts>();
             builder.Services.AddTransient<PgAddContract>();
             builder.Services.AddTransient<PgReports>();
+            builder.Services.AddTransient<PgSettings>();
 
             QuestPDF.Settings.License = LicenseType.Community;
 #if DEBUG

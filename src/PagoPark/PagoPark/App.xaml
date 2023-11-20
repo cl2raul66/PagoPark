@@ -16,22 +16,21 @@
             <t:FirstTwoCharsConverter x:Key="FirstTwoChars" />
             <t:DateToDayofweekConverter x:Key="DateToDayofweek" />
             <t:NumberMonthToNameMonthConverter x:Key="NumberMonthToNameMonth" />
-            <Style TargetType="Button">
-                <Setter Property="FontSize" Value="Subtitle" />
-            </Style>
-            <Style TargetType="Entry">
-                <Setter Property="PlaceholderColor" Value="{StaticResource Gray400}" />
-            </Style>
-            <Style TargetType="Editor">
-                <Setter Property="PlaceholderColor" Value="{StaticResource Gray400}" />
-            </Style>
             <Style x:Key="LabelTitle" TargetType="Label">
-                <Setter Property="FontSize" Value="Title" />
+                <Setter Property="FontSize" Value="{OnIdiom Default=16, Phone=Title}" />
                 <Setter Property="TextColor" Value="{StaticResource Secondary}" />
                 <Setter Property="FontAttributes" Value="Bold" />
             </Style>
             <Style x:Key="LabelSubtitle" TargetType="Label">
-                <Setter Property="FontSize" Value="Subtitle" />
+                <Setter Property="FontSize" Value="{OnIdiom Default=13, Phone=Subtitle}" />
+                <Setter Property="TextColor" Value="{StaticResource Secondary}" />
+            </Style>
+            <Style x:Key="LabelBody" TargetType="Label">
+                <Setter Property="FontSize" Value="{OnIdiom Default=12, Phone=Body}" />
+                <Setter Property="TextColor" Value="{StaticResource Secondary}" />
+            </Style>
+            <Style x:Key="LabelDefault" TargetType="Label">
+                <Setter Property="FontSize" Value="{OnIdiom Default=10, Phone=Default}" />
                 <Setter Property="TextColor" Value="{StaticResource Secondary}" />
             </Style>
             <Style x:Key="LabelCaptionBody" TargetType="Label">
@@ -40,7 +39,7 @@
                 <Setter Property="FontAttributes" Value="Bold" />
             </Style>
             <Style x:Key="LabelCaption" TargetType="Label">
-                <Setter Property="FontSize" Value="Caption" />
+                <Setter Property="FontSize" Value="{OnIdiom Default=14, Phone=Caption}" />
                 <Setter Property="TextColor" Value="{StaticResource Primary}" />
                 <Setter Property="FontAttributes" Value="Bold" />
             </Style>
@@ -67,12 +66,18 @@
                 </Setter>
             </Style>
             <Style x:Key="BorderItemSubtitle" TargetType="Label">
-                <Setter Property="FontSize" Value="Subtitle" />
+                <Setter Property="FontSize" Value="{OnIdiom Default=Body, Phone=Subtitle}" />
                 <Setter Property="TextColor" Value="{StaticResource White}" />
             </Style>
             <Style x:Key="BorderItemBody" TargetType="Label">
                 <Setter Property="FontSize" Value="Body" />
                 <Setter Property="TextColor" Value="{StaticResource White}" />
+            </Style>
+            <Style x:Key="GridContentpage" TargetType="Grid">
+                <!--<Setter Property="MaximumWidthRequest" Value="{OnIdiom Default=400, Phone=2000}" />-->
+                <Setter Property="RowSpacing" Value="{OnIdiom Default=10, Phone=14}" />
+                <Setter Property="Padding" Value="{OnIdiom Default=10, Phone='14,10'}" />
+                <Setter Property="HorizontalOptions" Value="{OnIdiom Default=Center, Phone=Fill}" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

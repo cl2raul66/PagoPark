@@ -6,7 +6,10 @@
     Title="Setting"
     Shell.NavBarIsVisible="False">
 
-    <ScrollView Padding="14,10">
+    <ScrollView
+        Padding="{OnIdiom Default=10, Phone='14,10'}"
+        HorizontalOptions="{OnIdiom Default=Center, Phone=Fill}"
+        MaximumWidthRequest="{OnIdiom Default=400, Phone=2000}">
         <VerticalStackLayout Spacing="14">
             <Grid RowDefinitions="auto,auto" RowSpacing="8">
                 <Label
@@ -41,6 +44,24 @@
                             Style="{StaticResource LabelCaption}"
                             Grid.Row="1"
                             Text="Tap to manage contracts." />
+                    </Grid>
+                </VerticalStackLayout>
+            </Grid>
+            <Grid RowDefinitions="auto,auto" RowSpacing="8">
+                <Label
+                    Style="{StaticResource LabelSubtitle}"
+                    Grid.Row="0"
+                    Text="Fake data:" />
+                <VerticalStackLayout Grid.Row="1" Spacing="8">
+                    <Grid RowDefinitions="auto,auto" RowSpacing="4">
+                        <Button
+                            Grid.Row="0"
+                            Clicked="Button_Clicked"
+                            Text="Generate fake data" />
+                        <Label
+                            Style="{StaticResource LabelCaption}"
+                            Grid.Row="1"
+                            Text="Generate fake data to test the app." />
                     </Grid>
                 </VerticalStackLayout>
             </Grid>
