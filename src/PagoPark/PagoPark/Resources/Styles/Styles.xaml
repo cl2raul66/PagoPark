@@ -12,9 +12,11 @@
     </Style>
 
     <Style TargetType="Border">
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
-        <Setter Property="StrokeShape" Value="Rectangle" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}" />
+        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 4" />
         <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Padding" Value="{OnIdiom Default='6,4', Phone='6,8'}" />
     </Style>
 
     <Style TargetType="BoxView">

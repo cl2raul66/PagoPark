@@ -11,187 +11,174 @@
     x:DataType="vm:PgPayViewModel"
     Shell.NavBarIsVisible="False">
 
-    <Grid
-        Padding="{OnIdiom Default=10,
-                          Phone='14,10'}"
-        HorizontalOptions="{OnIdiom Default=Center,
-                                    Phone=Fill}"
-        MaximumWidthRequest="{OnIdiom Default=400,
-                                      Phone=2000}"
-        RowDefinitions="auto,*,auto"
-        RowSpacing="14">
-        <Frame Grid.Row="0" VerticalOptions="Start">
-            <Grid RowDefinitions="auto,auto" RowSpacing="10">
-                <Label
-                    Style="{StaticResource LabelSubtitle}"
-                    Grid.Row="0"
-                    Text="This week's summary:" />
-                <VerticalStackLayout
-                    Grid.Row="1"
-                    Padding="8,0"
-                    Spacing="4">
-                    <Border
-                        Padding="6"
-                        BackgroundColor="{StaticResource Secondary}"
-                        StrokeShape="RoundRectangle 4">
-                        <Grid RowDefinitions="auto,auto">
-                            <Label
-                                Style="{StaticResource LabelCaptionBody}"
-                                Text="Not presented:"
-                                TextColor="{StaticResource White}" />
-                            <Label
-                                Style="{StaticResource LabelCaptionBody}"
-                                Grid.Row="1"
-                                LineBreakMode="WordWrap"
-                                Text="{Binding NotPresented, Mode=OneWay}"
-                                TextColor="{StaticResource Tertiary}" />
-                        </Grid>
-                    </Border>
-                </VerticalStackLayout>
-            </Grid>
-        </Frame>
-
-        <Frame Grid.Row="1">
-            <Grid RowDefinitions="auto,*" RowSpacing="8">
-                <Frame
-                    Grid.Row="0"
-                    Padding="0"
-                    BackgroundColor="{StaticResource White}"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start">
-                    <CollectionView
-                        ItemsSource="{Binding ThisWeek, Mode=OneWay}"
-                        SelectedItem="{Binding CurrentWeekDay, Mode=TwoWay}"
-                        SelectionMode="Single">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <tool:DayOfWeek2TemplateSelector>
-                                <tool:DayOfWeek2TemplateSelector.StartItemTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                            Style="{StaticResource BorderItem}"
-                                            Padding="{OnIdiom Phone='12,10',
-                                                              Default='8,0'}"
-                                            StrokeShape="RoundRectangle 4,0,4,0">
-                                            <Label
-                                                x:Name="LabelTitle"
-                                                FontAttributes="Bold"
-                                                FontSize="{OnIdiom Default=Caption,
-                                                                   Phone=Subtitle}"
-                                                HorizontalOptions="Center"
-                                                Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
-                                                TextColor="{StaticResource White}"
-                                                VerticalOptions="Center" />
-                                        </Border>
-                                    </DataTemplate>
-                                </tool:DayOfWeek2TemplateSelector.StartItemTemplate>
-                                <tool:DayOfWeek2TemplateSelector.EndItemTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                            Style="{StaticResource BorderItem}"
-                                            Padding="{OnIdiom Phone='12,10',
-                                                              Default='8,0'}"
-                                            StrokeShape="RoundRectangle 0,4,0,4">
-                                            <Label
-                                                x:Name="LabelTitle"
-                                                FontAttributes="Bold"
-                                                FontSize="{OnIdiom Default=Caption,
-                                                                   Phone=Subtitle}"
-                                                HorizontalOptions="Center"
-                                                Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
-                                                TextColor="{StaticResource White}"
-                                                VerticalOptions="Center" />
-                                        </Border>
-                                    </DataTemplate>
-                                </tool:DayOfWeek2TemplateSelector.EndItemTemplate>
-                                <tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource BorderItem}" Padding="{OnIdiom Phone='12,10', Default='8,0'}">
-                                            <Label
-                                                x:Name="LabelTitle"
-                                                FontAttributes="Bold"
-                                                FontSize="{OnIdiom Default=Caption,
-                                                                   Phone=Subtitle}"
-                                                HorizontalOptions="Center"
-                                                Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
-                                                TextColor="{StaticResource White}"
-                                                VerticalOptions="Center" />
-                                        </Border>
-                                    </DataTemplate>
-                                </tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
-                            </tool:DayOfWeek2TemplateSelector>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </Frame>
+    <Grid Style="{StaticResource GridContentpage}" RowDefinitions="auto,*,auto">
+        <HorizontalStackLayout
+            Grid.Row="0"
+            HorizontalOptions="{OnIdiom Default=Center, Phone=Center}"
+            Spacing="8">
+            <Button FontFamily="icofont" Text="{StaticResource ArrowLeft}" />
+            <Border Padding="2">
                 <CollectionView
-                    Grid.Row="1"
-                    ItemsSource="{Binding Paymentlogs, Mode=OneWay}"
-                    SelectedItem="{Binding SelectedPaymentLog, Mode=TwoWay}"
+                    ItemsSource="{Binding ThisWeek, Mode=OneWay}"
+                    SelectedItem="{Binding CurrentWeekDay, Mode=TwoWay}"
                     SelectionMode="Single">
-                    <CollectionView.EmptyView>
-                        <ContentView>
-                            <StackLayout
-                                HorizontalOptions="Center"
-                                Spacing="8"
-                                VerticalOptions="Center">
-                                <Image HeightRequest="72" WidthRequest="72">
-                                    <Image.Source>
-                                        <FontImageSource
-                                            FontFamily="icofont"
-                                            Glyph="{StaticResource Pay}"
-                                            Color="{StaticResource Gray300}" />
-                                    </Image.Source>
-                                </Image>
-                                <Label Style="{StaticResource LabelDisableBody}" Text="No payments made this week!" />
-                            </StackLayout>
-                        </ContentView>
-                    </CollectionView.EmptyView>
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:DailyPaymentLog">
-                            <Border
-                                Style="{StaticResource BorderItem}"
-                                Padding="10,8"
-                                StrokeShape="RoundRectangle 4">
-                                <VerticalStackLayout Spacing="0">
-                                    <Label Style="{StaticResource BorderItemSubtitle}" Text="{Binding ., Mode=OneWay}" />
-                                    <Label
-                                        Style="{StaticResource BorderItemBody}"
-                                        HorizontalTextAlignment="End"
-                                        Text="{Binding Amount, Mode=OneWay, TargetNullValue='Amount paid: 0.00', StringFormat='Amount paid: {0:F2}'}">
-                                        <Label.Triggers>
-                                            <DataTrigger
-                                                Binding="{Binding Amount, Mode=OneWay, TargetNullValue='0'}"
-                                                TargetType="Label"
-                                                Value="0">
-                                                <Setter Property="TextColor" Value="{StaticResource Black}" />
-                                                <Setter Property="FontSize" Value="Caption" />
-                                                <Setter Property="FontAttributes" Value="Bold" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                </VerticalStackLayout>
-                            </Border>
-                        </DataTemplate>
+                        <tool:DayOfWeek2TemplateSelector>
+                            <tool:DayOfWeek2TemplateSelector.StartItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Style="{StaticResource BorderItem}"
+                                        Padding="{OnIdiom Phone='5,6', Default='8,0'}"
+                                        StrokeShape="RoundRectangle 2,0,2,0">
+                                        <Label
+                                            x:Name="LabelTitle"
+                                            FontAttributes="Bold"
+                                            FontSize="{OnIdiom Default=Caption, Phone=Subtitle}"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
+                                            TextColor="{StaticResource White}"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                </DataTemplate>
+                            </tool:DayOfWeek2TemplateSelector.StartItemTemplate>
+                            <tool:DayOfWeek2TemplateSelector.EndItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Style="{StaticResource BorderItem}"
+                                        Padding="{OnIdiom Phone='6', Default='8,0'}"
+                                        StrokeShape="RoundRectangle 0,2,0,2">
+                                        <Label
+                                            x:Name="LabelTitle"
+                                            FontAttributes="Bold"
+                                            FontSize="{OnIdiom Default=Caption, Phone=Subtitle}"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
+                                            TextColor="{StaticResource White}"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                </DataTemplate>
+                            </tool:DayOfWeek2TemplateSelector.EndItemTemplate>
+                            <tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Style="{StaticResource BorderItem}"
+                                        Margin="1,0"
+                                        Padding="{OnIdiom Phone='6', Default='8,0'}"
+                                        StrokeShape="Rectangle">
+                                        <Label
+                                            x:Name="LabelTitle"
+                                            FontAttributes="Bold"
+                                            FontSize="{OnIdiom Default=Caption, Phone=Subtitle}"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding ., Converter={StaticResource DateToDayofweek}}"
+                                            TextColor="{StaticResource White}"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                </DataTemplate>
+                            </tool:DayOfWeek2TemplateSelector.DefaultItemTemplate>
+                        </tool:DayOfWeek2TemplateSelector>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </Grid>
-        </Frame>
-
-        <Frame Grid.Row="2" Padding="12">
-            <VerticalStackLayout Spacing="10">
+            </Border>
+            <Button FontFamily="icofont" Text="{StaticResource ArrowRight}" />
+        </HorizontalStackLayout>
+        <Border Grid.Row="1" Background="White">
+            <CollectionView
+                ItemsSource="{Binding Paymentlogs, Mode=OneWay}"
+                SelectedItem="{Binding SelectedPaymentLog, Mode=TwoWay}"
+                SelectionMode="Single">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="2" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <!--<Image
+                                HeightRequest="72"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                WidthRequest="72">
+                                <Image.Source>
+                                    <FontImageSource
+                                        FontFamily="icofont"
+                                        Glyph="{StaticResource Pay}"
+                                        Color="{StaticResource Gray300}" />
+                                </Image.Source>
+                            </Image>-->
+                            <Label
+                                Style="{StaticResource LabelDisableBody}"
+                                FontFamily="icofont"
+                                FontSize="72"
+                                HorizontalTextAlignment="Center"
+                                Text="{StaticResource Pay}" />
+                            <Label Style="{StaticResource LabelDisableBody}" Text="No payments made this week!" />
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:DailyPaymentLog">
+                        <Border
+                            Style="{StaticResource BorderItem}"
+                            Padding="10,8"
+                            StrokeShape="RoundRectangle 4">
+                            <VerticalStackLayout Spacing="0">
+                                <Label Style="{StaticResource BorderItemSubtitle}" Text="{Binding ., Mode=OneWay}" />
+                                <Label
+                                    Style="{StaticResource BorderItemBody}"
+                                    HorizontalTextAlignment="End"
+                                    Text="{Binding Amount, Mode=OneWay, TargetNullValue='Amount paid: 0.00', StringFormat='Amount paid: {0:F2}'}">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Amount, Mode=OneWay, TargetNullValue='0'}"
+                                            TargetType="Label"
+                                            Value="0">
+                                            <Setter Property="TextColor" Value="{StaticResource Black}" />
+                                            <Setter Property="FontSize" Value="Caption" />
+                                            <Setter Property="FontAttributes" Value="Bold" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+        <Frame Grid.Row="2" HorizontalOptions="{OnIdiom Default=Center, Phone=Fill}">
+            <Grid
+                HorizontalOptions="{OnIdiom Default=Center, Phone=Fill}"
+                RowDefinitions="auto,auto"
+                RowSpacing="{OnIdiom Default=4, Phone=10}">
                 <Label Style="{StaticResource LabelSubtitle}" Text="Quick access:" />
-                <Button
-                    Command="{Binding GoToSetPayCommand}"
-                    IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
-                    Text="Set payment" />
-                <Button
-                    Command="{Binding SetNotpresentedCommand}"
-                    IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
-                    Text="Set not presented" />
-                <Button Command="{Binding GoToSetPayAllWeekCommand}" Text="Set payment for all week" />
-            </VerticalStackLayout>
+                <FlexLayout
+                    Grid.Row="1"
+                    AlignContent="{OnIdiom Default=Center, Phone=SpaceBetween}"
+                    AlignItems="{OnIdiom Default=Center, Phone=Stretch}"
+                    Direction="{OnIdiom Default=Row, Phone=Column}"
+                    HorizontalOptions="{OnIdiom Default=Center, Phone=Fill}"
+                    JustifyContent="{OnIdiom Default=Center, Phone=SpaceEvenly}"
+                    Wrap="{OnIdiom Default=Wrap, Phone=NoWrap}">
+                    <Button
+                        Command="{Binding GoToSetPayCommand}"
+                        IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
+                        MinimumWidthRequest="200"
+                        Text="Set payment" />
+                    <Button
+                        Margin="{OnIdiom Default='4,0', Phone='0,4'}"
+                        Command="{Binding SetNotpresentedCommand}"
+                        IsEnabled="{Binding SelectedPaymentLog, Mode=OneWay, Converter={tk:IsNotNullConverter}}"
+                        MinimumWidthRequest="200"
+                        Text="Set not presented" />
+                    <Button
+                        Margin="{OnIdiom Default='0', Phone=0}"
+                        Command="{Binding GoToSetPayAllWeekCommand}"
+                        MinimumWidthRequest="200"
+                        Text="Set payment for all week" />
+                </FlexLayout>
+            </Grid>
         </Frame>
     </Grid>
 

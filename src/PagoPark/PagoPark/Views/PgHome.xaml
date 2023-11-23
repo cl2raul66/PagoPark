@@ -37,10 +37,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid
-        Style="{StaticResource GridContentpage}"
-        RowDefinitions="auto,*,auto"
-        RowSpacing="14">
+    <Grid Style="{StaticResource GridContentpage}" RowDefinitions="auto,*,auto">
         <Label
             Style="{StaticResource LabelTitle}"
             Grid.Row="0"
